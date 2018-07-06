@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "tsc",
 		"ts-node": "ts-node",
-		"lint": "cd api && npm run lint",
+		"lint": "tslint --project tsconfig.json --force --format stylish",
 		"test": "ts-node test/simple.ts && ts-node test/fulltextsearch.ts"
 	},
 	"repository": {

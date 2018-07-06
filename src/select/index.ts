@@ -31,8 +31,10 @@ export class OrderByQueryBuilder extends QueryBuilder {
 		pretty?: boolean | undefined;
 		semicolon?: boolean | undefined;
 	}): string {
+		const prettyOrders: string = pretty ? ',\n         ' : ', ';
+		const prettyBreak: string = pretty ? '\n' : ' ';
 		let sql: string = this.whereQueryBuilder.toSQL({ pretty, semicolon: false });
-		sql += ' ';
+		sql += prettyBreak;
 		sql += 'ORDER BY ';
 		sql += this.orders
 			.map((order: string | Order) => {
@@ -50,10 +52,10 @@ export class OrderByQueryBuilder extends QueryBuilder {
 					}
 				}
 			})
-			.join(', ');
-		sql += ' ';
+			.join(prettyOrders);
+		sql += prettyBreak;
 		sql += `LIMIT ${this._limit}`;
-		sql += ' ';
+		sql += prettyBreak;
 		sql += `OFFSET ${this._offset}`;
 		if (semicolon) {
 			sql += ';';
@@ -78,10 +80,15 @@ export class WhereQueryBuilder extends QueryBuilder {
 		pretty?: boolean | undefined;
 		semicolon?: boolean | undefined;
 	}): string {
+		const prettyBreak: string = pretty ? '\n' : ' ';
 		let sql: string = this.fromQueryBuilder.toSQL({ pretty, semicolon: false });
-		sql += ' ';
+		sql += prettyBreak;
 		sql += 'WHERE ';
-		sql += this.condition;
+		if (pretty) {
+			sql += this.condition.split(' AND').join('\n  AND');
+		} else {
+			sql += this.condition;
+		}
 		if (semicolon) {
 			sql += ';';
 		}
@@ -120,9 +127,11 @@ export class FromQueryBuilder extends QueryBuilder {
 	}
 
 	public toSQL({ pretty = false, semicolon = false }: { pretty?: boolean; semicolon?: boolean } = {}): string {
+		const prettySelection: string = pretty ? ',\n       ' : ', ';
+		const prettyBreak: string = pretty ? '\n' : ' ';
 		let sql: string = '';
-		sql += `SELECT ${this.selectQueryBuilder.selects.join(', ')}`;
-		sql += ' ';
+		sql += `SELECT ${this.selectQueryBuilder.selects.join(prettySelection)}`;
+		sql += prettyBreak;
 		sql += `FROM `;
 		if (typeof this.fromClause === 'string') {
 			sql += this.fromClause;
@@ -135,7 +144,7 @@ export class FromQueryBuilder extends QueryBuilder {
 			}
 		}
 		if (this.joins.length > 0) {
-			sql += ' ';
+			sql += prettyBreak;
 			sql += this.joins
 				.map((join: Join) => {
 					switch (join.type) {
@@ -143,7 +152,7 @@ export class FromQueryBuilder extends QueryBuilder {
 							return `CROSS JOIN ${join.tableName} AS ${join.alias}`;
 					}
 				})
-				.join(' ');
+				.join(prettyBreak);
 		}
 		if (semicolon) {
 			sql += ';';

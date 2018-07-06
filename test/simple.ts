@@ -6,5 +6,7 @@ const sql: string = query.toSQL();
 
 const sqlString: string = `SELECT firstname FROM person`;
 
-console.log(sql);
-console.log(sql === sqlString);
+console.log('Actual:', sql);
+console.log('Expected:', sqlString);
+console.log('Equals:', sql === sqlString);
+console.log();
