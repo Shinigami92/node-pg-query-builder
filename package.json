@@ -5,7 +5,9 @@
 	"main": "src/index.ts",
 	"scripts": {
 		"build": "tsc",
-		"lint": "cd api && npm run lint"
+		"ts-node": "ts-node",
+		"lint": "cd api && npm run lint",
+		"test": "ts-node test/simple.ts && ts-node test/fulltextsearch.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -21,7 +23,9 @@
 	},
 	"homepage": "https://github.com/Shinigami92/node-pg-query-builder#readme",
 	"devDependencies": {
+		"@types/node": "~10.5.2",
 		"prettier": "1.13.7",
+		"ts-node": "~7.0.0",
 		"tslint": "~5.10.0",
 		"tslint-eslint-rules": "~5.3.1",
 		"tslint-language-service": "~0.9.9",

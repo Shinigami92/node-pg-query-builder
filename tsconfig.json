@@ -15,5 +15,5 @@
 		"strict": true,
 		"noUnusedLocals": true
 	},
-	"exclude": ["**/node_modules/**", "**/dist/**"]
+	"exclude": ["**/node_modules/**", "**/dist/**", "test"]
 }
