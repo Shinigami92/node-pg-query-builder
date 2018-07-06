@@ -1,4 +1,4 @@
-import { SelectQueryBuilder } from '../query/select';
+import { SelectQueryBuilder } from './select';
 
 export abstract class QueryBuilder {
 	public abstract toSQL({ pretty, semicolon }?: { pretty?: boolean; semicolon?: boolean }): string;

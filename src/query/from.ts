@@ -1,4 +1,4 @@
-import { Aliasable, QueryBuilder } from '../select';
+import { Aliasable, QueryBuilder } from '.';
 import { SelectQueryBuilder } from './select';
 import { WhereQueryBuilder } from './where';
 

@@ -1,4 +1,4 @@
-import { Aliasable } from '../select';
+import { Aliasable } from '.';
 import { FromQueryBuilder } from './from';
 
 export class SelectQueryBuilder {

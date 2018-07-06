@@ -1,4 +1,4 @@
-import { QueryBuilder } from '../select';
+import { QueryBuilder } from '.';
 import { WhereQueryBuilder } from './where';
 
 export interface Order {

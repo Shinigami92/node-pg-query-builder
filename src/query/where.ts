@@ -1,4 +1,4 @@
-import { QueryBuilder } from '../select';
+import { QueryBuilder } from '.';
 import { FromQueryBuilder } from './from';
 import { Order, OrderByQueryBuilder } from './order';
 
