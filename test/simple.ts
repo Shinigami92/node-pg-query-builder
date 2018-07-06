@@ -1,4 +1,5 @@
-import { QueryBuilder, select } from '../src/select';
+import { select } from '../src/query';
+import { QueryBuilder } from '../src/query/query';
 
 const query: QueryBuilder = select('firstname').from('person');
 

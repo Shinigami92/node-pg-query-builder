@@ -1,6 +1,6 @@
-import { QueryBuilder } from '.';
 import { FromQueryBuilder } from './from';
 import { Order, OrderByQueryBuilder } from './order';
+import { QueryBuilder, ToSQLConfig } from './query';
 
 export class WhereQueryBuilder extends QueryBuilder {
 	constructor(private fromQueryBuilder: FromQueryBuilder, private condition: string) {
@@ -11,13 +11,7 @@ export class WhereQueryBuilder extends QueryBuilder {
 		return new OrderByQueryBuilder(this, orders);
 	}
 
-	public toSQL({
-		pretty = false,
-		semicolon = false
-	}: {
-		pretty?: boolean | undefined;
-		semicolon?: boolean | undefined;
-	}): string {
+	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
 		const prettyBreak: string = pretty ? '\n' : ' ';
 		let sql: string = this.fromQueryBuilder.toSQL({ pretty, semicolon: false });
 		sql += prettyBreak;

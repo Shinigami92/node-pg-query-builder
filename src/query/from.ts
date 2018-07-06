@@ -1,4 +1,4 @@
-import { Aliasable, QueryBuilder } from '.';
+import { Aliasable, QueryBuilder, ToSQLConfig } from './query';
 import { SelectQueryBuilder } from './select';
 import { WhereQueryBuilder } from './where';
 
@@ -32,7 +32,7 @@ export class FromQueryBuilder extends QueryBuilder {
 		return new WhereQueryBuilder(this, value);
 	}
 
-	public toSQL({ pretty = false, semicolon = false }: { pretty?: boolean; semicolon?: boolean } = {}): string {
+	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
 		const prettySelection: string = pretty ? ',\n       ' : ', ';
 		const prettyBreak: string = pretty ? '\n' : ' ';
 		let sql: string = '';

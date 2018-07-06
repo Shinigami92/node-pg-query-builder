@@ -1,5 +1,5 @@
-import { Aliasable } from '.';
 import { FromQueryBuilder } from './from';
+import { Aliasable } from './query';
 
 export class SelectQueryBuilder {
 	public selects: string[] = [];

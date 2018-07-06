@@ -1,4 +1,4 @@
-import { QueryBuilder } from '.';
+import { QueryBuilder, ToSQLConfig } from './query';
 import { WhereQueryBuilder } from './where';
 
 export interface Order {
@@ -23,13 +23,7 @@ export class OrderByQueryBuilder extends QueryBuilder {
 		return this;
 	}
 
-	public toSQL({
-		pretty = false,
-		semicolon = false
-	}: {
-		pretty?: boolean | undefined;
-		semicolon?: boolean | undefined;
-	}): string {
+	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
 		const prettyOrders: string = pretty ? ',\n         ' : ', ';
 		const prettyBreak: string = pretty ? '\n' : ' ';
 		let sql: string = this.whereQueryBuilder.toSQL({ pretty, semicolon: false });

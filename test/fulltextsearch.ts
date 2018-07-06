@@ -2,7 +2,8 @@ import { cast, DataType } from '../src/data-types';
 import { to_tsquery, to_tsvector, ts_rank_cd, tsvector_matches_tsquery } from '../src/functions/text-search';
 import { eq } from '../src/operators/comparison';
 import { and } from '../src/operators/logical';
-import { QueryBuilder, select } from '../src/select';
+import { select } from '../src/query';
+import { QueryBuilder } from '../src/query/query';
 
 const searchTerm: string = 'abc:*';
 
