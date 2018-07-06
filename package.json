@@ -1,0 +1,30 @@
+{
+	"name": "node-pg-query-builder",
+	"version": "1.0.0",
+	"description": "A QueryBuilder for PostgreSQL written in TypeScript",
+	"main": "src/index.ts",
+	"scripts": {
+		"build": "tsc",
+		"lint": "cd api && npm run lint"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Shinigami92/node-pg-query-builder.git"
+	},
+	"author": {
+		"name": "Christopher Quadflieg",
+		"email": "chrissi92@hotmail.de"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Shinigami92/node-pg-query-builder/issues"
+	},
+	"homepage": "https://github.com/Shinigami92/node-pg-query-builder#readme",
+	"devDependencies": {
+		"prettier": "1.13.7",
+		"tslint": "~5.10.0",
+		"tslint-eslint-rules": "~5.3.1",
+		"tslint-language-service": "~0.9.9",
+		"typescript": "~2.9.2"
+	}
+}
