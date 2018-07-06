@@ -1,6 +1,6 @@
-import { FromQueryBuilder, select } from '../src/select';
+import { QueryBuilder, select } from '../src/select';
 
-const query: FromQueryBuilder = select('firstname').from('person');
+const query: QueryBuilder = select('firstname').from('person');
 
 const sql: string = query.toSQL();
 
