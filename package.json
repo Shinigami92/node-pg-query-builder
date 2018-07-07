@@ -4,7 +4,7 @@
 	"description": "A QueryBuilder for PostgreSQL written in TypeScript",
 	"main": "src/index.ts",
 	"scripts": {
-		"clean": "rimraf dist node_modules",
+		"clean": "rimraf dist package-lock.json coverage .nyc_output node_modules && npm install",
 		"compile": "tsc",
 		"lint": "tslint --project tsconfig.json --force --format stylish",
 		"test": "mocha --reporter spec --require ts-node/register --colors \"test/**/*Test.ts\"",
@@ -25,9 +25,11 @@
 	"homepage": "https://github.com/Shinigami92/node-pg-query-builder#readme",
 	"devDependencies": {
 		"@types/chai": "~4.1.4",
+		"@types/chai-string": "~1.4.1",
 		"@types/mocha": "~5.2.4",
 		"@types/node": "~10.5.2",
 		"chai": "~4.1.2",
+		"chai-string": "~1.4.0",
 		"mocha": "~5.2.0",
 		"nyc": "~12.0.2",
 		"prettier": "1.13.7",

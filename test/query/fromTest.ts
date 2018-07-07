@@ -1,4 +1,8 @@
 import { expect } from 'chai';
+import * as chai from 'chai';
+import * as chaiString from 'chai-string';
+
+chai.use(chaiString);
 
 import { select } from '../../src/query';
 import { QueryBuilder } from '../../src/query/query';
@@ -9,6 +13,8 @@ describe('FromQueryBuilder', function(): void {
 
 		const sql: string = query.toSQL();
 
-		expect(sql).to.equal('SELECT firstname FROM person');
+		expect(sql)
+			.to.equal('SELECT firstname FROM person')
+			.and.to.be.singleLine();
 	});
 });
