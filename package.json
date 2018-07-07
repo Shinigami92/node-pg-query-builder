@@ -7,7 +7,7 @@
 		"build": "tsc",
 		"ts-node": "ts-node",
 		"lint": "tslint --project tsconfig.json --force --format stylish",
-		"test": "ts-node test/simple.ts && ts-node test/fulltextsearch.ts"
+		"test": "mocha --require ts-node/register test/**/*Test.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -23,7 +23,11 @@
 	},
 	"homepage": "https://github.com/Shinigami92/node-pg-query-builder#readme",
 	"devDependencies": {
+		"@types/chai": "~4.1.4",
+		"@types/mocha": "~5.2.4",
 		"@types/node": "~10.5.2",
+		"chai": "~4.1.2",
+		"mocha": "~5.2.0",
 		"prettier": "1.13.7",
 		"ts-node": "~7.0.0",
 		"tslint": "~5.10.0",
