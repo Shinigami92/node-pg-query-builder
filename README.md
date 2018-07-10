@@ -4,6 +4,8 @@ A QueryBuilder for PostgreSQL written in TypeScript
 
 ## Build Status
 
+[![GitHub version](https://badge.fury.io/gh/Shinigami92%2Fnode-pg-query-builder.svg)](https://badge.fury.io/gh/Shinigami92%2Fnode-pg-query-builder)
+
 ### Master
 
 [![Build Status](https://travis-ci.org/Shinigami92/node-pg-query-builder.svg?branch=master)](https://travis-ci.org/Shinigami92/node-pg-query-builder)
@@ -15,11 +17,18 @@ A QueryBuilder for PostgreSQL written in TypeScript
 ## How-To
 
 ```ts
-import { cast, DataType } from '../src/data-types';
-import { to_tsquery, to_tsvector, ts_rank_cd, tsvector_matches_tsquery } from '../src/functions/text-search';
-import { eq } from '../src/operators/comparison';
-import { and } from '../src/operators/logical';
-import { QueryBuilder, select } from '../src/select';
+import {
+	and,
+	cast,
+	DataType,
+	eq,
+	QueryBuilder,
+	select,
+	ts_rank_cd,
+	to_tsquery,
+	to_tsvector,
+	tsvector_matches_tsquery
+} from 'pg-query-builder';
 
 const searchTerm: string = 'abc:*';
 
@@ -42,6 +51,8 @@ const sql: string = query.toSQL({
 	semicolon: true
 });
 ```
+
+Result:
 
 ```sql
 SELECT v.*, ts_rank_cd('textsearch', 'query') AS rank
