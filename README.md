@@ -2,6 +2,16 @@
 
 A QueryBuilder for PostgreSQL written in TypeScript
 
+## Build Status
+
+### Master
+
+[![Build Status](https://travis-ci.org/Shinigami92/node-pg-query-builder.svg?branch=master)](https://travis-ci.org/Shinigami92/node-pg-query-builder)
+
+### Development
+
+[![Build Status](https://travis-ci.org/Shinigami92/node-pg-query-builder.svg?branch=development)](https://travis-ci.org/Shinigami92/node-pg-query-builder)
+
 ## How-To
 
 ```ts
