@@ -28,8 +28,8 @@ export class FromQueryBuilder extends QueryBuilder {
 		return this;
 	}
 
-	public where(value: string): WhereQueryBuilder {
-		return new WhereQueryBuilder(this, value);
+	public where(condition: string): WhereQueryBuilder {
+		return new WhereQueryBuilder(this, condition);
 	}
 
 	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
@@ -38,7 +38,7 @@ export class FromQueryBuilder extends QueryBuilder {
 		let sql: string = '';
 		sql += `SELECT ${this.selectQueryBuilder.selects.join(prettySelection)}`;
 		sql += prettyBreak;
-		sql += `FROM `;
+		sql += 'FROM ';
 		if (typeof this.fromClause === 'string') {
 			sql += this.fromClause;
 		} else {

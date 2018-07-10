@@ -12,9 +12,10 @@ export { and, or } from './operators/logical';
 export { between, eq, exists, ge, gt, like, inList, notInList, isNotNull, isNull } from './operators/comparison';
 
 // Queries
-export { select } from './query';
+export { select, update } from './query';
 export { QueryBuilder, Aliasable, ToSQLConfig } from './query/query';
 export { SelectQueryBuilder } from './query/select';
 export { FromQueryBuilder, Join, JoinType } from './query/from';
 export { WhereQueryBuilder } from './query/where';
 export { OrderByQueryBuilder, Order } from './query/order';
+export { UpdateQueryBuilder } from './query/update';
