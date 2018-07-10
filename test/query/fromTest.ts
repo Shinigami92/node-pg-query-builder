@@ -4,8 +4,7 @@ import * as chaiString from 'chai-string';
 
 chai.use(chaiString);
 
-import { select } from '../../src/query';
-import { QueryBuilder } from '../../src/query/query';
+import { QueryBuilder, select } from '../../src';
 
 describe('FromQueryBuilder', function(): void {
 	it('should return single line when pretty is disabled', function(): void {

@@ -1,11 +1,17 @@
 import { expect } from 'chai';
 
-import { cast, DataType } from '../../src/data-types';
-import { to_tsquery, to_tsvector, ts_rank_cd, tsvector_matches_tsquery } from '../../src/functions/text-search';
-import { eq } from '../../src/operators/comparison';
-import { and } from '../../src/operators/logical';
-import { select } from '../../src/query';
-import { QueryBuilder } from '../../src/query/query';
+import {
+	and,
+	cast,
+	DataType,
+	eq,
+	QueryBuilder,
+	select,
+	to_tsquery,
+	to_tsvector,
+	ts_rank_cd,
+	tsvector_matches_tsquery
+} from '../../src';
 
 describe('FulltextSearch', function(): void {
 	it('should be pretty printed when pretty is enabled', function(): void {
