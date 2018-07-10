@@ -16,7 +16,7 @@ describe('FulltextSearch', function(): void {
 			.where(
 				and([
 					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)),
-					tsvector_matches_tsquery('query', 'textsearch')
+					tsvector_matches_tsquery('textsearch', 'query')
 				])
 			)
 			.orderBy(['created_date', { rank: 'DESC' }])
@@ -31,7 +31,7 @@ FROM v_fulltext_search AS v
 CROSS JOIN to_tsquery('simple', 'abc:*'::text) AS query
 CROSS JOIN to_tsvector('simple', v.searchtext) AS textsearch
 WHERE v.user_id = '971acc92-5b1e-4dd4-b177-a0dee7a27c21'::uuid
-  AND query @@ textsearch
+  AND textsearch @@ query
 ORDER BY created_date,
          rank DESC
 LIMIT 10
@@ -48,7 +48,7 @@ OFFSET 0`;
 			.where(
 				and([
 					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)),
-					tsvector_matches_tsquery('query', 'textsearch')
+					tsvector_matches_tsquery('textsearch', 'query')
 				])
 			)
 			.orderBy(['created_date', { rank: 'DESC' }])
@@ -63,7 +63,7 @@ OFFSET 0`;
 			` CROSS JOIN to_tsquery('simple', 'abc:*'::text) AS query` +
 			` CROSS JOIN to_tsvector('simple', v.searchtext) AS textsearch` +
 			` WHERE v.user_id = '971acc92-5b1e-4dd4-b177-a0dee7a27c21'::uuid` +
-			` AND query @@ textsearch` +
+			` AND textsearch @@ query` +
 			` ORDER BY created_date, rank DESC` +
 			` LIMIT 10` +
 			` OFFSET 0`;
