@@ -6,10 +6,10 @@ export { count } from './functions';
 export { to_tsquery, to_tsvector, ts_rank_cd, tsvector_matches_tsquery } from './functions/text-search';
 
 // Logical Operators
-export { and } from './operators/logical';
+export { and, or } from './operators/logical';
 
 // Comparison Operators
-export { eq, ge } from './operators/comparison';
+export { between, eq, exists, ge, gt, like, inList, notInList, isNotNull, isNull } from './operators/comparison';
 
 // Queries
 export { select } from './query';
