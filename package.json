@@ -1,6 +1,6 @@
 {
 	"name": "node-pg-query-builder",
-	"version": "1.0.0",
+	"version": "0.1.0",
 	"description": "A QueryBuilder for PostgreSQL written in TypeScript",
 	"main": "src/index.ts",
 	"scripts": {
