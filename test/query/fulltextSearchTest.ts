@@ -21,7 +21,7 @@ describe('FulltextSearch', function(): void {
 			.crossJoin(to_tsvector('simple', 'v.searchtext'), 'textsearch')
 			.where(
 				and([
-					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)),
+					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)).resolve(),
 					tsvector_matches_tsquery('textsearch', 'query')
 				])
 			)
@@ -53,7 +53,7 @@ OFFSET 0`;
 			.crossJoin(to_tsvector('simple', 'v.searchtext'), 'textsearch')
 			.where(
 				and([
-					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)),
+					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)).resolve(),
 					tsvector_matches_tsquery('textsearch', 'query')
 				])
 			)

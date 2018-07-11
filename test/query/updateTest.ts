@@ -10,7 +10,7 @@ describe('UpdateQueryBuilder', function(): void {
 	it('should return expected result', function(): void {
 		const query: QueryBuilder = update('company')
 			.set({ salary: 15000 })
-			.where(eq('id', 3));
+			.where(eq('id', 3).resolve());
 
 		const sql: string = query.toSQL();
 

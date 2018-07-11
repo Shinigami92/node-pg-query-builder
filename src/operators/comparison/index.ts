@@ -9,8 +9,16 @@ export function between(column: string, x: string | number, y: string | number):
 	return `${column} BETWEEN '${x}' AND '${y}'`;
 }
 
-export function eq(column: string, value: string | number): string {
-	return `${column} = ${value}`;
+export class EqualsComparisonOperator {
+	public static eq(column: string, value: string | number): EqualsComparisonOperator {
+		return new EqualsComparisonOperator(column, value);
+	}
+
+	constructor(public readonly column: string, public readonly value: string | number) {}
+
+	public resolve(): string {
+		return `${this.column} = ${this.value}`;
+	}
 }
 
 export function exists(subquery: string | QueryBuilder): string {
