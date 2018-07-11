@@ -1,3 +1,2 @@
-export function count(expression: string = '*'): string {
-	return `count('${expression}')`;
-}
+import { CountFunction } from './count';
+export const count: (expression?: string) => CountFunction = CountFunction.count;

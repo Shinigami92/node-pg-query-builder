@@ -15,10 +15,10 @@ import {
 
 describe('FulltextSearch', function(): void {
 	it('should be pretty printed when pretty is enabled', function(): void {
-		const query: QueryBuilder = select(['v.*', { rank: ts_rank_cd('textsearch', 'query') }])
+		const query: QueryBuilder = select(['v.*', { rank: ts_rank_cd('textsearch', 'query').resolve() }])
 			.from({ v: 'v_fulltext_search' })
-			.crossJoin(to_tsquery('simple', cast('abc:*', DataType.TEXT)), 'query')
-			.crossJoin(to_tsvector('simple', 'v.searchtext'), 'textsearch')
+			.crossJoin(to_tsquery('simple', cast('abc:*', DataType.TEXT)).resolve(), 'query')
+			.crossJoin(to_tsvector('simple', 'v.searchtext').resolve(), 'textsearch')
 			.where(
 				and([
 					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)),
@@ -47,10 +47,10 @@ OFFSET 0`;
 	});
 
 	it('should be pretty printed when pretty is disabled', function(): void {
-		const query: QueryBuilder = select(['v.*', { rank: ts_rank_cd('textsearch', 'query') }])
+		const query: QueryBuilder = select(['v.*', { rank: ts_rank_cd('textsearch', 'query').resolve() }])
 			.from({ v: 'v_fulltext_search' })
-			.crossJoin(to_tsquery('simple', cast('abc:*', DataType.TEXT)), 'query')
-			.crossJoin(to_tsvector('simple', 'v.searchtext'), 'textsearch')
+			.crossJoin(to_tsquery('simple', cast('abc:*', DataType.TEXT)).resolve(), 'query')
+			.crossJoin(to_tsvector('simple', 'v.searchtext').resolve(), 'textsearch')
 			.where(
 				and([
 					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)),

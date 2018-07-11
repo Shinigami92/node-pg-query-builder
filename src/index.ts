@@ -2,8 +2,8 @@
 export { DataType, cast } from './data-types';
 
 // Functions
-export { count } from './functions';
-export { to_tsquery, to_tsvector, ts_rank_cd, tsvector_matches_tsquery } from './functions/text-search';
+export * from './functions';
+export * from './functions/text-search';
 
 // Logical Operators
 export * from './operators/logical';

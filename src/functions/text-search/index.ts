@@ -1,14 +1,11 @@
-export function ts_rank_cd(textsearch: 'textsearch', query: 'query'): string {
-	return `ts_rank_cd('${textsearch}', '${query}')`;
-}
+import { TsRankCdFunction } from './ts-rank-cd';
+export const ts_rank_cd: (textsearch: 'textsearch', query: 'query') => TsRankCdFunction = TsRankCdFunction.ts_rank_cd;
 
-export function to_tsquery(config: 'simple', query: string): string {
-	return `to_tsquery('${config}', ${query})`;
-}
+import { ToTsQueryFunction } from './to-tsquery';
+export const to_tsquery: (config: 'simple', query: string) => ToTsQueryFunction = ToTsQueryFunction.to_tsquery;
 
-export function to_tsvector(config: 'simple', document: string): string {
-	return `to_tsvector('${config}', ${document})`;
-}
+import { ToTsVectorFunction } from './to-tsvector';
+export const to_tsvector: (config: 'simple', document: string) => ToTsVectorFunction = ToTsVectorFunction.to_tsvector;
 
 import { TsVectorMatchesTsQueryFunction } from './tsvector-matches-tsquery';
 export const tsvector_matches_tsquery: (tsvector: string, tsquery: string) => TsVectorMatchesTsQueryFunction =
