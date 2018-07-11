@@ -23,7 +23,7 @@ describe('FulltextSearch', function(): void {
 				and([
 					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)),
 					tsvector_matches_tsquery('textsearch', 'query')
-				]).resolve()
+				])
 			)
 			.orderBy(['created_date', { rank: 'DESC' }])
 			.limit(10)
@@ -55,7 +55,7 @@ OFFSET 0`;
 				and([
 					eq('v.user_id', cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', DataType.UUID)),
 					tsvector_matches_tsquery('textsearch', 'query')
-				]).resolve()
+				])
 			)
 			.orderBy(['created_date', { rank: 'DESC' }])
 			.limit(10)

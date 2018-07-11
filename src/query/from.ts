@@ -1,3 +1,4 @@
+import { LogicalOperator } from '../operators/logical/logical-operator';
 import { Aliasable, QueryBuilder, ToSQLConfig } from './query';
 import { SelectQueryBuilder } from './select';
 import { WhereQueryBuilder } from './where';
@@ -28,7 +29,7 @@ export class FromQueryBuilder extends QueryBuilder {
 		return this;
 	}
 
-	public where(condition: string): WhereQueryBuilder {
+	public where(condition: LogicalOperator): WhereQueryBuilder {
 		return new WhereQueryBuilder(this, condition);
 	}
 

@@ -10,7 +10,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using and and greater equal', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(and([ge('age', 25), ge('salary', 65000)]).resolve());
+			.where(and([ge('age', 25), ge('salary', 65000)]));
 
 		const sql: string = query.toSQL();
 
@@ -22,7 +22,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using or and greater equal', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(or([ge('age', 25), ge('salary', 65000)]).resolve());
+			.where(or([ge('age', 25), ge('salary', 65000)]));
 
 		const sql: string = query.toSQL();
 
@@ -34,7 +34,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using is not null', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(isNotNull('age').resolve());
+			.where(isNotNull('age'));
 
 		const sql: string = query.toSQL();
 
@@ -46,7 +46,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using like', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(like('name', 'Pa%').resolve());
+			.where(like('name', 'Pa%'));
 
 		const sql: string = query.toSQL();
 
@@ -58,7 +58,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using in', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(inList('age', [25, 27]).resolve());
+			.where(inList('age', [25, 27]));
 
 		const sql: string = query.toSQL();
 
@@ -70,7 +70,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using not in', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(notInList('age', [25, 27]).resolve());
+			.where(notInList('age', [25, 27]));
 
 		const sql: string = query.toSQL();
 
@@ -82,7 +82,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using between', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(between('age', 25, 27).resolve());
+			.where(between('age', 25, 27));
 
 		const sql: string = query.toSQL();
 
@@ -98,8 +98,8 @@ describe('WhereQueryBuilder', function(): void {
 				exists(
 					select('age')
 						.from('company')
-						.where(gt('salary', 65000).resolve())
-				).resolve()
+						.where(gt('salary', 65000))
+				)
 			);
 
 		const sql: string = query.toSQL();
@@ -117,8 +117,8 @@ describe('WhereQueryBuilder', function(): void {
 					'age',
 					select('age')
 						.from('company')
-						.where(gt('salary', 65000).resolve())
-				).resolve()
+						.where(gt('salary', 65000))
+				)
 			);
 
 		const sql: string = query.toSQL();

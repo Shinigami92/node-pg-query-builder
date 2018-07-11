@@ -1,9 +1,10 @@
+import { LogicalOperator } from '../operators/logical/logical-operator';
 import { FromQueryBuilder } from './from';
 import { Order, OrderByQueryBuilder } from './order';
 import { QueryBuilder, ToSQLConfig } from './query';
 
 export class WhereQueryBuilder extends QueryBuilder {
-	constructor(private fromQueryBuilder: FromQueryBuilder, private condition: string) {
+	constructor(private fromQueryBuilder: FromQueryBuilder, private condition: LogicalOperator) {
 		super();
 	}
 
@@ -16,10 +17,11 @@ export class WhereQueryBuilder extends QueryBuilder {
 		let sql: string = this.fromQueryBuilder.toSQL({ pretty, semicolon: false });
 		sql += prettyBreak;
 		sql += 'WHERE ';
+		const condition: string = this.condition.resolve();
 		if (pretty) {
-			sql += this.condition.split(' AND').join('\n  AND');
+			sql += condition.split(' AND').join('\n  AND');
 		} else {
-			sql += this.condition;
+			sql += condition;
 		}
 		if (semicolon) {
 			sql += ';';
