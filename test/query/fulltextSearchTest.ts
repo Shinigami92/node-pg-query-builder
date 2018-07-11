@@ -64,15 +64,15 @@ OFFSET 0`;
 		const sql: string = query.toSQL({ pretty: false });
 
 		const sqlString: string =
-			`SELECT v.*, ts_rank_cd('textsearch', 'query') AS rank` +
-			` FROM v_fulltext_search AS v` +
-			` CROSS JOIN to_tsquery('simple', 'abc:*'::text) AS query` +
-			` CROSS JOIN to_tsvector('simple', v.searchtext) AS textsearch` +
-			` WHERE v.user_id = '971acc92-5b1e-4dd4-b177-a0dee7a27c21'::uuid` +
-			` AND textsearch @@ query` +
-			` ORDER BY created_date, rank DESC` +
-			` LIMIT 10` +
-			` OFFSET 0`;
+			"SELECT v.*, ts_rank_cd('textsearch', 'query') AS rank" +
+			' FROM v_fulltext_search AS v' +
+			" CROSS JOIN to_tsquery('simple', 'abc:*'::text) AS query" +
+			" CROSS JOIN to_tsvector('simple', v.searchtext) AS textsearch" +
+			" WHERE v.user_id = '971acc92-5b1e-4dd4-b177-a0dee7a27c21'::uuid" +
+			' AND textsearch @@ query' +
+			' ORDER BY created_date, rank DESC' +
+			' LIMIT 10' +
+			' OFFSET 0';
 
 		expect(sql).to.equal(sqlString);
 	});
