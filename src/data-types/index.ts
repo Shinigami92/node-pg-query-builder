@@ -3,6 +3,5 @@ export class DataType {
 	public static UUID: string = 'uuid';
 }
 
-export function cast(value: string, type: string): string {
-	return `'${value}'::${type}`;
-}
+import { Cast } from './cast';
+export const cast: (value: string, type: string) => Cast = Cast.cast;
