@@ -9,10 +9,7 @@ export { to_tsquery, to_tsvector, ts_rank_cd, tsvector_matches_tsquery } from '.
 export { and, or } from './operators/logical';
 
 // Comparison Operators
-import { EqualsComparisonOperator } from './operators/comparison/equals-comparison-operator';
-const eq: (column: string, value: string | number) => EqualsComparisonOperator = EqualsComparisonOperator.eq;
-export { eq };
-export { between, exists, ge, gt, like, inList, notInList, isNotNull, isNull } from './operators/comparison';
+export * from './operators/comparison';
 
 // Queries
 export { select, update } from './query';

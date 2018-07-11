@@ -1,48 +1,39 @@
 import { QueryBuilder } from '../../query/query';
 
-export function between(column: string, x: number, y: number): string;
-export function between(column: string, x: string, y: string): string;
-export function between(column: string, x: string | number, y: string | number): string {
-	if (typeof x === 'number') {
-		return `${column} BETWEEN ${x} AND ${y}`;
-	}
-	return `${column} BETWEEN '${x}' AND '${y}'`;
-}
+import { BetweenComparisonOperator } from './between';
+export const between: {
+	(column: string, x: number, y: number): BetweenComparisonOperator;
+	(column: string, x: string, y: string): BetweenComparisonOperator;
+} =
+	BetweenComparisonOperator.between;
 
-export function exists(subquery: string | QueryBuilder): string {
-	if (subquery instanceof QueryBuilder) {
-		subquery = subquery.toSQL({ semicolon: false });
-	}
-	return `EXISTS (${subquery})`;
-}
+import { EqualsComparisonOperator } from './equal';
+export const eq: (column: string, value: string | number) => EqualsComparisonOperator = EqualsComparisonOperator.eq;
 
-export function ge(column: string, value: string | number): string {
-	return `${column} >= ${value}`;
-}
+import { ExistsComparisonOperator } from './exists';
+export const exists: (subquery: string | QueryBuilder) => ExistsComparisonOperator = ExistsComparisonOperator.exists;
 
-export function gt(column: string, value: string | number | QueryBuilder): string {
-	if (value instanceof QueryBuilder) {
-		value = `(${value.toSQL({ semicolon: false })})`;
-	}
-	return `${column} > ${value}`;
-}
+import { GreaterEqualComparisonOperator } from './greater-equal';
+export const ge: (column: string, value: string | number | QueryBuilder) => GreaterEqualComparisonOperator =
+	GreaterEqualComparisonOperator.ge;
 
-export function like(column: string, value: string): string {
-	return `${column} LIKE '${value}'`;
-}
+import { GreaterThanComparisonOperator } from './greater-than';
+export const gt: (column: string, value: string | number | QueryBuilder) => GreaterThanComparisonOperator =
+	GreaterThanComparisonOperator.gt;
 
-export function inList(column: string, values: Array<string | number>): string {
-	return `${column} IN (${values.join(', ')})`;
-}
+import { InComparisonOperator } from './in';
+export const inList: (column: string, values: ReadonlyArray<string | number>) => InComparisonOperator =
+	InComparisonOperator.in;
 
-export function notInList(column: string, values: Array<string | number>): string {
-	return `${column} NOT IN (${values.join(', ')})`;
-}
+import { NotInComparisonOperator } from './not-in';
+export const notInList: (column: string, values: ReadonlyArray<string | number>) => NotInComparisonOperator =
+	NotInComparisonOperator.notIn;
 
-export function isNull(column: string): string {
-	return `${column} IS NULL`;
-}
+import { IsNullComparisonOperator } from './is-null';
+export const isNull: (column: string) => IsNullComparisonOperator = IsNullComparisonOperator.isNull;
 
-export function isNotNull(column: string): string {
-	return `${column} IS NOT NULL`;
-}
+import { IsNotNullComparisonOperator } from './is-not-null';
+export const isNotNull: (column: string) => IsNotNullComparisonOperator = IsNotNullComparisonOperator.isNotNull;
+
+import { LikeComparisonOperator } from './like';
+export const like: (column: string, value: string) => LikeComparisonOperator = LikeComparisonOperator.like;
