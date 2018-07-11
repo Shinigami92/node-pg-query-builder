@@ -10,7 +10,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using and and greater equal', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(and([ge('age', 25).resolve(), ge('salary', 65000).resolve()]));
+			.where(and([ge('age', 25), ge('salary', 65000)]).resolve());
 
 		const sql: string = query.toSQL();
 
@@ -22,7 +22,7 @@ describe('WhereQueryBuilder', function(): void {
 	it('should return expected result using or and greater equal', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')
-			.where(or([ge('age', 25).resolve(), ge('salary', 65000).resolve()]));
+			.where(or([ge('age', 25), ge('salary', 65000)]).resolve());
 
 		const sql: string = query.toSQL();
 

@@ -10,6 +10,6 @@ export function to_tsvector(config: 'simple', document: string): string {
 	return `to_tsvector('${config}', ${document})`;
 }
 
-export function tsvector_matches_tsquery(tsvector: string, tsquery: string): string {
-	return `${tsvector} @@ ${tsquery}`;
-}
+import { TsVectorMatchesTsQueryFunction } from './tsvector-matches-tsquery';
+export const tsvector_matches_tsquery: (tsvector: string, tsquery: string) => TsVectorMatchesTsQueryFunction =
+	TsVectorMatchesTsQueryFunction.tsvector_matches_tsquery;

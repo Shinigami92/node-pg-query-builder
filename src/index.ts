@@ -6,7 +6,7 @@ export { count } from './functions';
 export { to_tsquery, to_tsvector, ts_rank_cd, tsvector_matches_tsquery } from './functions/text-search';
 
 // Logical Operators
-export { and, or } from './operators/logical';
+export * from './operators/logical';
 
 // Comparison Operators
 export * from './operators/comparison';

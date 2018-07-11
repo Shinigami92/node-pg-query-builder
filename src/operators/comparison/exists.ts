@@ -1,11 +1,14 @@
 import { QueryBuilder } from '../../query/query';
+import { ComparisonOperator } from './comparison-operator';
 
-export class ExistsComparisonOperator {
+export class ExistsComparisonOperator extends ComparisonOperator {
 	public static exists(subquery: string | QueryBuilder): ExistsComparisonOperator {
 		return new ExistsComparisonOperator(subquery);
 	}
 
-	constructor(public readonly subquery: string | QueryBuilder) {}
+	constructor(public readonly subquery: string | QueryBuilder) {
+		super();
+	}
 
 	public resolve(): string {
 		let subquery: string;
