@@ -1,3 +1,4 @@
+import { ComparisonOperator } from '../operators/comparison/comparison-operator';
 import { LogicalOperator } from '../operators/logical/logical-operator';
 import { Aliasable, QueryBuilder, ToSQLConfig } from './query';
 import { SelectQueryBuilder } from './select';
@@ -29,7 +30,7 @@ export class FromQueryBuilder extends QueryBuilder {
 		return this;
 	}
 
-	public where(condition: LogicalOperator): WhereQueryBuilder {
+	public where(condition: LogicalOperator | ComparisonOperator): WhereQueryBuilder {
 		return new WhereQueryBuilder(this, condition);
 	}
 

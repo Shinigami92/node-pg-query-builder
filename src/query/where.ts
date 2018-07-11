@@ -1,10 +1,11 @@
+import { ComparisonOperator } from '../operators/comparison/comparison-operator';
 import { LogicalOperator } from '../operators/logical/logical-operator';
 import { FromQueryBuilder } from './from';
 import { Order, OrderByQueryBuilder } from './order';
 import { QueryBuilder, ToSQLConfig } from './query';
 
 export class WhereQueryBuilder extends QueryBuilder {
-	constructor(private fromQueryBuilder: FromQueryBuilder, private condition: LogicalOperator) {
+	constructor(private fromQueryBuilder: FromQueryBuilder, private condition: LogicalOperator | ComparisonOperator) {
 		super();
 	}
 
