@@ -1,3 +1,4 @@
+import { Cast } from '../../data-types/cast';
 import { QueryBuilder } from '../../query/query';
 
 import { BetweenComparisonOperator } from './between';
@@ -8,7 +9,8 @@ export const between: {
 	BetweenComparisonOperator.between;
 
 import { EqualsComparisonOperator } from './equal';
-export const eq: (column: string, value: string | number) => EqualsComparisonOperator = EqualsComparisonOperator.eq;
+export const eq: (column: string, value: string | number | Cast) => EqualsComparisonOperator =
+	EqualsComparisonOperator.eq;
 
 import { ExistsComparisonOperator } from './exists';
 export const exists: (subquery: string | QueryBuilder) => ExistsComparisonOperator = ExistsComparisonOperator.exists;
