@@ -1,0 +1,8 @@
+{
+	"recommendations": [
+		"editorconfig.editorconfig",
+		"maty.vscode-mocha-sidebar",
+		"pflannery.vscode-versionlens",
+		"esbenp.prettier-vscode"
+	]
+}

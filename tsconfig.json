@@ -1,0 +1,20 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "dist",
+		"target": "es6",
+		"module": "commonjs",
+		"plugins": [
+			{
+				"name": "tslint-language-service"
+			}
+		],
+		"lib": ["es2017"],
+		"declaration": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"sourceMap": true
+	},
+	"exclude": ["**/node_modules/**", "**/dist/**", "test"]
+}

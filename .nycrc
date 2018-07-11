@@ -1,0 +1,8 @@
+{
+	"include": ["src/**/*.ts"],
+	"extension": [".ts"],
+	"exclude": ["coverage", "dist", "**/*.d.ts"],
+	"reporter": ["text-summary", "html"],
+	"sourceMap": true,
+	"all": true
+}

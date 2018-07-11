@@ -1,0 +1,9 @@
+{
+	"typescript.tsdk": "node_modules\\typescript\\lib",
+	"editor.formatOnSave": true,
+	"mocha.files.glob": "test/**/*Test.ts",
+	"mocha.options": {
+		"compilers": "ts:ts-node/register"
+	},
+	"mocha.requires": ["ts-node/register"]
+}
