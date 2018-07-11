@@ -1,3 +1,5 @@
+import { ComparisonOperator } from '../operators/comparison/comparison-operator';
+import { LogicalOperator } from '../operators/logical/logical-operator';
 import { QueryBuilder, ToSQLConfig } from './query';
 
 export interface SetMap {
@@ -10,8 +12,14 @@ export class UpdateWhereQueryBuilder extends QueryBuilder {
 		super();
 	}
 
-	public where(condition: string): this {
-		this.condition = condition;
+	public where(condition: string | LogicalOperator | ComparisonOperator): this {
+		if (condition instanceof LogicalOperator) {
+			this.condition = condition.resolve();
+		} else if (condition instanceof ComparisonOperator) {
+			this.condition = condition.resolve();
+		} else {
+			this.condition = condition;
+		}
 		return this;
 	}
 
