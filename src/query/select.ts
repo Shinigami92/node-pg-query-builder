@@ -1,3 +1,4 @@
+import { TsRankCdFunction } from '../functions/text-search/ts-rank-cd';
 import { FromQueryBuilder } from './from';
 import { Aliasable } from './query';
 
@@ -14,7 +15,11 @@ export class SelectQueryBuilder {
 				}
 				for (const alias in selection) {
 					if (selection.hasOwnProperty(alias)) {
-						return `${selection[alias]} AS ${alias}`;
+						const value: string | TsRankCdFunction = selection[alias];
+						if (value instanceof TsRankCdFunction) {
+							return `${value.resolve()} AS ${alias}`;
+						}
+						return `${value} AS ${alias}`;
 					}
 				}
 				return '';

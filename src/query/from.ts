@@ -1,3 +1,5 @@
+import { ToTsQueryFunction } from '../functions/text-search/to-tsquery';
+import { ToTsVectorFunction } from '../functions/text-search/to-tsvector';
 import { ComparisonOperator } from '../operators/comparison/comparison-operator';
 import { LogicalOperator } from '../operators/logical/logical-operator';
 import { Aliasable, QueryBuilder, ToSQLConfig } from './query';
@@ -21,7 +23,12 @@ export class FromQueryBuilder extends QueryBuilder {
 		super();
 	}
 
-	public crossJoin(tableName: string, alias: string): this {
+	public crossJoin(tableName: string | ToTsQueryFunction | ToTsVectorFunction, alias: string): this {
+		if (tableName instanceof ToTsQueryFunction) {
+			tableName = tableName.resolve();
+		} else if (tableName instanceof ToTsVectorFunction) {
+			tableName = tableName.resolve();
+		}
 		this.joins.push({
 			tableName,
 			alias,

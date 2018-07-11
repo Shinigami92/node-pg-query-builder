@@ -1,5 +1,7 @@
+import { TsRankCdFunction } from '../functions/text-search/ts-rank-cd';
+
 export interface Aliasable {
-	[alias: string]: string;
+	[alias: string]: string | TsRankCdFunction;
 }
 
 export interface ToSQLConfig {

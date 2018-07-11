@@ -1,8 +1,10 @@
+import { Cast } from '../../data-types/cast';
+
 import { TsRankCdFunction } from './ts-rank-cd';
 export const ts_rank_cd: (textsearch: 'textsearch', query: 'query') => TsRankCdFunction = TsRankCdFunction.ts_rank_cd;
 
 import { ToTsQueryFunction } from './to-tsquery';
-export const to_tsquery: (config: 'simple', query: string) => ToTsQueryFunction = ToTsQueryFunction.to_tsquery;
+export const to_tsquery: (config: 'simple', query: string | Cast) => ToTsQueryFunction = ToTsQueryFunction.to_tsquery;
 
 import { ToTsVectorFunction } from './to-tsvector';
 export const to_tsvector: (config: 'simple', document: string) => ToTsVectorFunction = ToTsVectorFunction.to_tsvector;
