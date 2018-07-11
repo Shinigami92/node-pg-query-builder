@@ -1,5 +1,5 @@
 import { Resolvable } from '../../resolvable';
 
-export abstract class ComparisonOperator implements Resolvable {
+export abstract class LogicalOperator implements Resolvable {
 	public abstract resolve(): string;
 }
