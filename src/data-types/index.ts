@@ -1,4 +1,5 @@
 export class DataType {
+	public static DATE: string = 'date';
 	public static TEXT: string = 'text';
 	public static UUID: string = 'uuid';
 }
