@@ -24,6 +24,14 @@ export class WhereQueryBuilder extends QueryBuilder {
 		} else {
 			sql += condition;
 		}
+		if (this._limit !== null) {
+			sql += prettyBreak;
+			sql += `LIMIT ${this._limit}`;
+		}
+		if (this._offset !== null) {
+			sql += prettyBreak;
+			sql += `OFFSET ${this._offset}`;
+		}
 		if (semicolon) {
 			sql += ';';
 		}

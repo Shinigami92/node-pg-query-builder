@@ -69,6 +69,14 @@ export class FromQueryBuilder extends QueryBuilder {
 				})
 				.join(prettyBreak);
 		}
+		if (this._limit !== null) {
+			sql += prettyBreak;
+			sql += `LIMIT ${this._limit}`;
+		}
+		if (this._offset !== null) {
+			sql += prettyBreak;
+			sql += `OFFSET ${this._offset}`;
+		}
 		if (semicolon) {
 			sql += ';';
 		}

@@ -7,6 +7,33 @@ chai.use(chaiString);
 import { and, between, exists, ge, gt, inList, isNotNull, like, notInList, or, QueryBuilder, select } from '../../src';
 
 describe('WhereQueryBuilder', function(): void {
+	it('should chain limit', function(): void {
+		const query: QueryBuilder = select('firstname')
+			.from('person')
+			.where(like('firstname', 'A%'))
+			.limit(2);
+
+		const sql: string = query.toSQL();
+
+		expect(sql)
+			.to.equal("SELECT firstname FROM person WHERE firstname LIKE 'A%' LIMIT 2")
+			.and.to.be.singleLine();
+	});
+
+	it('should chain limit and offset', function(): void {
+		const query: QueryBuilder = select('firstname')
+			.from('person')
+			.where(like('firstname', 'A%'))
+			.limit(2)
+			.offset(3);
+
+		const sql: string = query.toSQL();
+
+		expect(sql)
+			.to.equal("SELECT firstname FROM person WHERE firstname LIKE 'A%' LIMIT 2 OFFSET 3")
+			.and.to.be.singleLine();
+	});
+
 	it('should return expected result using and and greater equal', function(): void {
 		const query: QueryBuilder = select('*')
 			.from('company')

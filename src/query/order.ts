@@ -6,21 +6,8 @@ export interface Order {
 }
 
 export class OrderByQueryBuilder extends QueryBuilder {
-	private _limit: number | null = null;
-	private _offset: number | null = null;
-
 	constructor(private whereQueryBuilder: WhereQueryBuilder, private orders: Array<string | Order>) {
 		super();
-	}
-
-	public limit(limit: number): this {
-		this._limit = limit;
-		return this;
-	}
-
-	public offset(offset: number): this {
-		this._offset = offset;
-		return this;
 	}
 
 	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
@@ -46,10 +33,14 @@ export class OrderByQueryBuilder extends QueryBuilder {
 				}
 			})
 			.join(prettyOrders);
-		sql += prettyBreak;
-		sql += `LIMIT ${this._limit}`;
-		sql += prettyBreak;
-		sql += `OFFSET ${this._offset}`;
+		if (this._limit !== null) {
+			sql += prettyBreak;
+			sql += `LIMIT ${this._limit}`;
+		}
+		if (this._offset !== null) {
+			sql += prettyBreak;
+			sql += `OFFSET ${this._offset}`;
+		}
 		if (semicolon) {
 			sql += ';';
 		}
