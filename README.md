@@ -22,34 +22,50 @@ $ npm install --save @shinigami92/pg-query-builder
 ```ts
 import { Client } from 'pg';
 import {
+	AliasReference,
 	and,
 	cast,
-	DataType,
+	ColumnDefinition,
+	DATE,
 	eq,
 	QueryBuilder,
+	RegConfig,
 	select,
-	ts_rank_cd,
+	TableDefinition,
+	TEXT,
 	to_tsquery,
 	to_tsvector,
-	tsvector_matches_tsquery
+	ts_rank_cd,
+	TsQueryAliasReference,
+	tsvector_matches_tsquery,
+	TsVectorAliasReference,
+	UUID
 } from 'pg-query-builder';
 
-const VFulltextSearch = new TableDefinition();
-VFulltextSearch.defineColumn('created_date', DataType.DATE);
-VFulltextSearch.defineColumn('searchtext', DataType.TEXT);
-VFulltextSearch.defineColumn('user_id', DataType.UUID);
+// Create a meta-model that defines your table
+class VFulltextSearchTable extends TableDefinition {
+	public readonly searchtext: ColumnDefinition = new ColumnDefinition('searchtext', TEXT, this);
+	public readonly user_id: ColumnDefinition = new ColumnDefinition('user_id', UUID, this);
+	public readonly created_date: ColumnDefinition = new ColumnDefinition('created_date', DATE);
+}
 
-const asTextsearch = new AliasReference('textsearch');
-const asQuery = new AliasReference('query');
-const asRank = new AliasReference('rank');
+// Maybe you want aliases for prettier SQL
+const asV: AliasReference = new AliasReference('v');
 
+const VFulltextSearch: VFulltextSearchTable = new VFulltextSearchTable('v_fulltext_search', asV);
+
+const asTextsearch: TsVectorAliasReference = new TsVectorAliasReference('textsearch');
+const asQuery: TsQueryAliasReference = new TsQueryAliasReference('query');
+const asRank: AliasReference = new AliasReference('rank');
+
+// Build the query
 const query: QueryBuilder = select(VFulltextSearch.__star, [ts_rank_cd(asTextsearch, asQuery), asRank])
 	.from(VFulltextSearch)
-	.crossJoin(to_tsquery(RegConfig.SIMPLE, cast('abc:*', DataType.TEXT)), asQuery)
+	.crossJoin(to_tsquery(RegConfig.SIMPLE, cast('abc:*', TEXT)), asQuery)
 	.crossJoin(to_tsvector(RegConfig.SIMPLE, VFulltextSearch.searchtext), asTextsearch)
 	.where(
 		and([
-			eq(VFulltextSearch.user_id, '971acc92-5b1e-4dd4-b177-a0dee7a27c21'),
+			eq(VFulltextSearch.user_id, cast('971acc92-5b1e-4dd4-b177-a0dee7a27c21', UUID)),
 			tsvector_matches_tsquery(asTextsearch, asQuery)
 		])
 	)
@@ -62,20 +78,22 @@ const sql: string = query.toSQL({ pretty: true, semicolon: true });
 
 // Using pg
 const queryConfig: QueryConfig = query.toQuery();
-const client = new Client /* config */();
+const client = new Client(dbConfig);
 client.query(queryConfig);
 ```
 
 Result:
 
 ```sql
-SELECT v.*, ts_rank_cd(textsearch, query) AS rank
+SELECT v.*,
+       ts_rank_cd(textsearch, query) AS rank
 FROM v_fulltext_search AS v
 CROSS JOIN to_tsquery('simple', 'abc:*'::text) AS query
 CROSS JOIN to_tsvector('simple', v.searchtext) AS textsearch
 WHERE v.user_id = '971acc92-5b1e-4dd4-b177-a0dee7a27c21'::uuid
-AND query @@ textsearch
-ORDER BY created_date, rank DESC
+  AND textsearch @@ query
+ORDER BY created_date,
+         rank DESC
 LIMIT 10
 OFFSET 0;
 ```
