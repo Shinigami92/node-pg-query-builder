@@ -1,12 +1,13 @@
 import { Cast } from '../../data-types/cast';
+import { ColumnDefinition } from '../../definitions/column-definition';
 import { ComparisonOperator } from './comparison-operator';
 
 export class EqualsComparisonOperator extends ComparisonOperator {
-	public static eq(column: string, value: string | number | Cast): EqualsComparisonOperator {
+	public static eq(column: ColumnDefinition, value: string | number | Cast): EqualsComparisonOperator {
 		return new EqualsComparisonOperator(column, value);
 	}
 
-	constructor(public readonly column: string, public readonly value: string | number | Cast) {
+	constructor(public readonly column: ColumnDefinition, public readonly value: string | number | Cast) {
 		super();
 	}
 
@@ -19,6 +20,6 @@ export class EqualsComparisonOperator extends ComparisonOperator {
 		} else {
 			value = this.value;
 		}
-		return `${this.column} = ${value}`;
+		return `${this.column.name} = ${value}`;
 	}
 }

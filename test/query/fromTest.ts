@@ -4,11 +4,17 @@ import * as chaiString from 'chai-string';
 
 chai.use(chaiString);
 
-import { QueryBuilder, select } from '../../src';
+import { ColumnDefinition, DataType, QueryBuilder, select, TableDefinition } from '../../src';
+
+class PersonTable extends TableDefinition {
+	public readonly firstname: ColumnDefinition = new ColumnDefinition('firstname', DataType.TEXT);
+}
+
+const Person: PersonTable = new PersonTable('person');
 
 describe('FromQueryBuilder', function(): void {
 	it('should return single line when pretty is disabled', function(): void {
-		const query: QueryBuilder = select('firstname').from('person');
+		const query: QueryBuilder = select(Person.firstname).from(Person);
 
 		const sql: string = query.toSQL();
 
@@ -18,8 +24,8 @@ describe('FromQueryBuilder', function(): void {
 	});
 
 	it('should chain limit', function(): void {
-		const query: QueryBuilder = select('firstname')
-			.from('person')
+		const query: QueryBuilder = select(Person.firstname)
+			.from(Person)
 			.limit(2);
 
 		const sql: string = query.toSQL();
@@ -30,8 +36,8 @@ describe('FromQueryBuilder', function(): void {
 	});
 
 	it('should chain limit and offset', function(): void {
-		const query: QueryBuilder = select('firstname')
-			.from('person')
+		const query: QueryBuilder = select(Person.firstname)
+			.from(Person)
 			.limit(2)
 			.offset(3);
 

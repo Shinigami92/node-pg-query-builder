@@ -1,13 +1,23 @@
+import { AliasReference } from '../definitions/alias-reference';
+import { ColumnDefinition } from '../definitions/column-definition';
 import { QueryBuilder, ToSQLConfig } from './query';
 import { WhereQueryBuilder } from './where';
 
+export type OrderDirection = 'ASC' | 'DESC' | null;
+
 export interface Order {
-	[column: string]: 'ASC' | 'DESC' | null;
+	[column: string]: OrderDirection;
 }
 
 export class OrderByQueryBuilder extends QueryBuilder {
-	constructor(private whereQueryBuilder: WhereQueryBuilder, private orders: Array<string | Order>) {
+	private readonly orders: Array<ColumnDefinition | [ColumnDefinition | AliasReference, OrderDirection]> = [];
+
+	constructor(
+		private readonly whereQueryBuilder: WhereQueryBuilder,
+		...orders: Array<ColumnDefinition | [ColumnDefinition | AliasReference, OrderDirection]>
+	) {
 		super();
+		this.orders.push(...orders);
 	}
 
 	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
@@ -17,19 +27,17 @@ export class OrderByQueryBuilder extends QueryBuilder {
 		sql += prettyBreak;
 		sql += 'ORDER BY ';
 		sql += this.orders
-			.map((order: string | Order) => {
-				if (typeof order === 'string') {
-					return order;
+			.map((order: ColumnDefinition | [ColumnDefinition | AliasReference, OrderDirection]) => {
+				if (order instanceof ColumnDefinition) {
+					return `${order.name}`;
 				} else {
-					for (const column in order) {
-						if (order.hasOwnProperty(column)) {
-							let stmt: string = column;
-							if (order[column] !== null) {
-								stmt += ` ${order[column]}`;
-							}
-							return stmt;
-						}
+					const link: ColumnDefinition | AliasReference = order[0];
+					const direction: OrderDirection = order[1];
+					let stmt: string = link instanceof ColumnDefinition ? link.name : link.aliasName;
+					if (direction !== null) {
+						stmt += ` ${direction}`;
 					}
+					return stmt;
 				}
 			})
 			.join(prettyOrders);

@@ -1,7 +1,9 @@
+import { AliasReference } from '../definitions/alias-reference';
+import { ColumnDefinition } from '../definitions/column-definition';
 import { ComparisonOperator } from '../operators/comparison/comparison-operator';
 import { LogicalOperator } from '../operators/logical/logical-operator';
 import { FromQueryBuilder } from './from';
-import { Order, OrderByQueryBuilder } from './order';
+import { OrderByQueryBuilder, OrderDirection } from './order';
 import { QueryBuilder, ToSQLConfig } from './query';
 
 export class WhereQueryBuilder extends QueryBuilder {
@@ -9,8 +11,10 @@ export class WhereQueryBuilder extends QueryBuilder {
 		super();
 	}
 
-	public orderBy(orders: Array<string | Order>): OrderByQueryBuilder {
-		return new OrderByQueryBuilder(this, orders);
+	public orderBy(
+		...orders: Array<ColumnDefinition | [ColumnDefinition | AliasReference, OrderDirection]>
+	): OrderByQueryBuilder {
+		return new OrderByQueryBuilder(this, ...orders);
 	}
 
 	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {

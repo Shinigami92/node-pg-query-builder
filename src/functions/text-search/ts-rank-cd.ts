@@ -1,15 +1,37 @@
+import { TsQueryAliasReference } from '../../definitions/tsquery-alias-reference';
+import { TsVectorAliasReference } from '../../definitions/tsvector-alias-reference';
 import { TextSearchFunction } from './text-search-function';
+import { ToTsQueryFunction } from './to-tsquery';
+import { ToTsVectorFunction } from './to-tsvector';
 
 export class TsRankCdFunction extends TextSearchFunction {
-	public static ts_rank_cd(textsearch: 'textsearch', query: 'query'): TsRankCdFunction {
+	public static ts_rank_cd(
+		textsearch: ToTsVectorFunction | TsVectorAliasReference,
+		query: ToTsQueryFunction | TsQueryAliasReference
+	): TsRankCdFunction {
 		return new TsRankCdFunction(textsearch, query);
 	}
 
-	constructor(public readonly textsearch: 'textsearch', public readonly query: 'query') {
+	constructor(
+		public readonly textsearch: ToTsVectorFunction | TsVectorAliasReference,
+		public readonly query: ToTsQueryFunction | TsQueryAliasReference
+	) {
 		super();
 	}
 
 	public resolve(): string {
-		return `ts_rank_cd('${this.textsearch}', '${this.query}')`;
+		let textsearch: string;
+		let query: string;
+		if (this.textsearch instanceof TsVectorAliasReference) {
+			textsearch = this.textsearch.aliasName;
+		} else {
+			textsearch = this.textsearch.resolve();
+		}
+		if (this.query instanceof TsQueryAliasReference) {
+			query = this.query.aliasName;
+		} else {
+			query = this.query.resolve();
+		}
+		return `ts_rank_cd(${textsearch}, ${query})`;
 	}
 }

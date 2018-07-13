@@ -19,3 +19,6 @@ export { FromQueryBuilder, Join, JoinType } from './query/from';
 export { WhereQueryBuilder } from './query/where';
 export { OrderByQueryBuilder, Order } from './query/order';
 export { UpdateQueryBuilder } from './query/update';
+
+// Definitions
+export * from './definitions';

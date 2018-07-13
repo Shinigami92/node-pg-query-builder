@@ -4,14 +4,20 @@ import * as chaiString from 'chai-string';
 
 chai.use(chaiString);
 
-import { like, QueryBuilder, select } from '../../src';
+import { ColumnDefinition, DataType, like, QueryBuilder, select, TableDefinition } from '../../src';
+
+class PersonTable extends TableDefinition {
+	public readonly firstname: ColumnDefinition = new ColumnDefinition('firstname', DataType.TEXT);
+}
+
+const Person: PersonTable = new PersonTable('person');
 
 describe('OrderQueryBuilder', function(): void {
 	it('should chain limit', function(): void {
-		const query: QueryBuilder = select('firstname')
-			.from('person')
-			.where(like('firstname', 'A%'))
-			.orderBy([{ firstname: 'ASC' }])
+		const query: QueryBuilder = select(Person.firstname)
+			.from(Person)
+			.where(like(Person.firstname, 'A%'))
+			.orderBy([Person.firstname, 'ASC'])
 			.limit(2);
 
 		const sql: string = query.toSQL();
@@ -22,10 +28,10 @@ describe('OrderQueryBuilder', function(): void {
 	});
 
 	it('should chain limit and offset', function(): void {
-		const query: QueryBuilder = select('firstname')
-			.from('person')
-			.where(like('firstname', 'A%'))
-			.orderBy([{ firstname: 'ASC' }])
+		const query: QueryBuilder = select(Person.firstname)
+			.from(Person)
+			.where(like(Person.firstname, 'A%'))
+			.orderBy([Person.firstname, 'ASC'])
 			.limit(2)
 			.offset(3);
 

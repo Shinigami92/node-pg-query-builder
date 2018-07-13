@@ -1,7 +1,8 @@
 export class DataType {
-	public static DATE: string = 'date';
-	public static TEXT: string = 'text';
-	public static UUID: string = 'uuid';
+	public static readonly DATE: string = 'date';
+	public static readonly INTEGER: string = 'integer';
+	public static readonly TEXT: string = 'text';
+	public static readonly UUID: string = 'uuid';
 }
 
 import { Cast } from './cast';

@@ -1,8 +1,12 @@
+import { AliasReference } from '../definitions/alias-reference';
+import { ColumnDefinition } from '../definitions/column-definition';
+import { TableDefinition } from '../definitions/table-definition';
 import { ToTsQueryFunction } from '../functions/text-search/to-tsquery';
 import { ToTsVectorFunction } from '../functions/text-search/to-tsvector';
+import { TsRankCdFunction } from '../functions/text-search/ts-rank-cd';
 import { ComparisonOperator } from '../operators/comparison/comparison-operator';
 import { LogicalOperator } from '../operators/logical/logical-operator';
-import { Aliasable, QueryBuilder, ToSQLConfig } from './query';
+import { QueryBuilder, ToSQLConfig } from './query';
 import { SelectQueryBuilder } from './select';
 import { WhereQueryBuilder } from './where';
 
@@ -12,18 +16,18 @@ export enum JoinType {
 
 export interface Join {
 	tableName: string;
-	alias: string;
+	alias: AliasReference;
 	type: JoinType;
 }
 
 export class FromQueryBuilder extends QueryBuilder {
 	private joins: Join[] = [];
 
-	constructor(private selectQueryBuilder: SelectQueryBuilder, private fromClause: string | Aliasable) {
+	constructor(private selectQueryBuilder: SelectQueryBuilder, private fromClause: TableDefinition) {
 		super();
 	}
 
-	public crossJoin(tableName: string | ToTsQueryFunction | ToTsVectorFunction, alias: string): this {
+	public crossJoin(tableName: string | ToTsQueryFunction | ToTsVectorFunction, alias: AliasReference): this {
 		if (tableName instanceof ToTsQueryFunction) {
 			tableName = tableName.resolve();
 		} else if (tableName instanceof ToTsVectorFunction) {
@@ -45,18 +49,32 @@ export class FromQueryBuilder extends QueryBuilder {
 		const prettySelection: string = pretty ? ',\n       ' : ', ';
 		const prettyBreak: string = pretty ? '\n' : ' ';
 		let sql: string = '';
-		sql += `SELECT ${this.selectQueryBuilder.selects.join(prettySelection)}`;
+		sql += `SELECT ${this.selectQueryBuilder.selects
+			.map((select: ColumnDefinition | [string | TsRankCdFunction, AliasReference | undefined]) => {
+				if (select instanceof ColumnDefinition) {
+					return select.name;
+				} else {
+					const value: string | TsRankCdFunction = select[0];
+					const alias: AliasReference | undefined = select[1];
+					let stmt: string = '';
+					if (typeof value === 'string') {
+						stmt = value;
+					} else {
+						stmt = value.resolve();
+					}
+					if (alias !== undefined) {
+						stmt += ` AS ${alias.aliasName}`;
+					}
+					return stmt;
+				}
+				return '';
+			})
+			.join(prettySelection)}`;
 		sql += prettyBreak;
 		sql += 'FROM ';
-		if (typeof this.fromClause === 'string') {
-			sql += this.fromClause;
-		} else {
-			for (const alias in this.fromClause) {
-				if (this.fromClause.hasOwnProperty(alias)) {
-					sql += `${this.fromClause[alias]} AS ${alias}`;
-					break;
-				}
-			}
+		sql += `${this.fromClause.tableName}`;
+		if (this.fromClause.alias !== undefined) {
+			sql += ` AS ${this.fromClause.alias.aliasName}`;
 		}
 		if (this.joins.length > 0) {
 			sql += prettyBreak;
@@ -64,7 +82,7 @@ export class FromQueryBuilder extends QueryBuilder {
 				.map((join: Join) => {
 					switch (join.type) {
 						case JoinType.CROSS_JOIN:
-							return `CROSS JOIN ${join.tableName} AS ${join.alias}`;
+							return `CROSS JOIN ${join.tableName} AS ${join.alias.aliasName}`;
 					}
 				})
 				.join(prettyBreak);

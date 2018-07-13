@@ -1,32 +1,16 @@
+import { AliasReference } from '../definitions/alias-reference';
+import { ColumnDefinition } from '../definitions/column-definition';
+import { TableDefinition } from '../definitions/table-definition';
 import { TsRankCdFunction } from '../functions/text-search/ts-rank-cd';
 import { FromQueryBuilder } from './from';
-import { Aliasable } from './query';
 
 export class SelectQueryBuilder {
-	public selects: string[] = [];
+	public readonly selects: Array<ColumnDefinition | [string | TsRankCdFunction, AliasReference | undefined]> = [];
 
-	constructor(selections: string | Array<string | Aliasable>) {
-		if (typeof selections === 'string') {
-			this.selects = [selections];
-		} else {
-			this.selects = selections.map((selection: string | Aliasable) => {
-				if (typeof selection === 'string') {
-					return selection;
-				}
-				for (const alias in selection) {
-					if (selection.hasOwnProperty(alias)) {
-						const value: string | TsRankCdFunction = selection[alias];
-						if (value instanceof TsRankCdFunction) {
-							return `${value.resolve()} AS ${alias}`;
-						}
-						return `${value} AS ${alias}`;
-					}
-				}
-				return '';
-			});
-		}
+	constructor(...selections: Array<ColumnDefinition | [string | TsRankCdFunction, AliasReference | undefined]>) {
+		this.selects.push(...selections);
 	}
-	public from(tableName: string | Aliasable): FromQueryBuilder {
+	public from(tableName: TableDefinition): FromQueryBuilder {
 		return new FromQueryBuilder(this, tableName);
 	}
 }
