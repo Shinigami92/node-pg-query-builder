@@ -8,12 +8,12 @@ import {
 	and,
 	between,
 	ColumnDefinition,
-	DataType,
 	exists,
 	ge,
 	GLOBAL_STAR,
 	gt,
 	inList,
+	INTEGER,
 	isNotNull,
 	isNull,
 	like,
@@ -21,19 +21,20 @@ import {
 	or,
 	QueryBuilder,
 	select,
-	TableDefinition
+	TableDefinition,
+	TEXT
 } from '../../src';
 
 class PersonTable extends TableDefinition {
-	public readonly firstname: ColumnDefinition = new ColumnDefinition('firstname', DataType.TEXT);
+	public readonly firstname: ColumnDefinition = new ColumnDefinition('firstname', TEXT);
 }
 
 const Person: PersonTable = new PersonTable('person');
 
 class CompanyTable extends TableDefinition {
-	public readonly name: ColumnDefinition = new ColumnDefinition('name', DataType.TEXT);
-	public readonly age: ColumnDefinition = new ColumnDefinition('age', DataType.INTEGER);
-	public readonly salary: ColumnDefinition = new ColumnDefinition('salary', DataType.INTEGER);
+	public readonly name: ColumnDefinition = new ColumnDefinition('name', TEXT);
+	public readonly age: ColumnDefinition = new ColumnDefinition('age', INTEGER);
+	public readonly salary: ColumnDefinition = new ColumnDefinition('salary', INTEGER);
 }
 
 const Company: CompanyTable = new CompanyTable('company');

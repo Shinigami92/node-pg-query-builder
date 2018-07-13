@@ -1,9 +1,9 @@
-export class DataType {
-	public static readonly DATE: string = 'date';
-	public static readonly INTEGER: string = 'integer';
-	public static readonly TEXT: string = 'text';
-	public static readonly UUID: string = 'uuid';
-}
+export { DataType } from './data-type';
+export { TEXT, TextType } from './character-types/text-type';
+export { INTEGER, IntegerType } from './numeric-types/integer-types/integer-type';
+export { DATE, DateType } from './time-types/date-type';
+export { UUID, UuidType } from './uuid-type';
 
 import { Cast } from './cast';
-export const cast: (value: string, type: string) => Cast = Cast.cast;
+import { DataType } from './data-type';
+export const cast: (value: string, type: DataType) => Cast = Cast.cast;

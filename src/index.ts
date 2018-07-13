@@ -1,5 +1,5 @@
 // DataTypes
-export { DataType, cast } from './data-types';
+export * from './data-types';
 
 // Functions
 export * from './functions';

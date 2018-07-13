@@ -1,9 +1,18 @@
+import { DataType } from '../data-types/data-type';
 import { AliasReference } from './alias-reference';
 import { ColumnDefinition } from './column-definition';
 
+export class StarType extends DataType {
+	constructor() {
+		super('*');
+	}
+}
+
+export const STAR_TYPE: StarType = new StarType();
+
 export class StarColumnDefinition extends ColumnDefinition {
 	constructor(public readonly table?: TableDefinition) {
-		super('*', 'star', table);
+		super('*', STAR_TYPE, table);
 	}
 }
 

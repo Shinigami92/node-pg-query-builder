@@ -4,10 +4,10 @@ import * as chaiString from 'chai-string';
 
 chai.use(chaiString);
 
-import { ColumnDefinition, DataType, like, QueryBuilder, select, TableDefinition } from '../../src';
+import { ColumnDefinition, like, QueryBuilder, select, TableDefinition, TEXT } from '../../src';
 
 class PersonTable extends TableDefinition {
-	public readonly firstname: ColumnDefinition = new ColumnDefinition('firstname', DataType.TEXT);
+	public readonly firstname: ColumnDefinition = new ColumnDefinition('firstname', TEXT);
 }
 
 const Person: PersonTable = new PersonTable('person');

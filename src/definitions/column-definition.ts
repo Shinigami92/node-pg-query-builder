@@ -1,9 +1,10 @@
+import { DataType } from '../data-types/data-type';
 import { TableDefinition } from './table-definition';
 
 export class ColumnDefinition {
 	constructor(
 		private readonly _name: string,
-		public readonly dataType: string,
+		public readonly dataType: DataType,
 		public readonly table?: TableDefinition
 	) {}
 
