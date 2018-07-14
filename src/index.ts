@@ -12,13 +12,7 @@ export * from './operators/logical';
 export * from './operators/comparison';
 
 // Queries
-export { select, update } from './query';
-export { QueryBuilder, Aliasable, ToSQLConfig } from './query/query';
-export { SelectQueryBuilder } from './query/select';
-export { FromQueryBuilder, Join, JoinType } from './query/from';
-export { WhereQueryBuilder } from './query/where';
-export { OrderByQueryBuilder, Order } from './query/order';
-export { UpdateQueryBuilder } from './query/update';
+export * from './query';
 
 // Definitions
 export * from './definitions';

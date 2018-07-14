@@ -3,10 +3,6 @@ import { ComparisonOperator } from '../comparison/comparison-operator';
 import { LogicalOperator } from './logical-operator';
 
 export class AndLogicalOperator extends LogicalOperator {
-	public static and(values: ReadonlyArray<ComparisonOperator | TsVectorMatchesTsQueryFunction>): AndLogicalOperator {
-		return new AndLogicalOperator(values);
-	}
-
 	constructor(public readonly values: ReadonlyArray<ComparisonOperator | TsVectorMatchesTsQueryFunction>) {
 		super();
 	}
@@ -14,4 +10,8 @@ export class AndLogicalOperator extends LogicalOperator {
 	public resolve(): string {
 		return this.values.map((v: ComparisonOperator) => v.resolve()).join(' AND ');
 	}
+}
+
+export function and(values: ReadonlyArray<ComparisonOperator | TsVectorMatchesTsQueryFunction>): AndLogicalOperator {
+	return new AndLogicalOperator(values);
 }

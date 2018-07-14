@@ -2,10 +2,6 @@ import { QueryBuilder } from '../../query/query';
 import { ComparisonOperator } from './comparison-operator';
 
 export class ExistsComparisonOperator extends ComparisonOperator {
-	public static exists(subquery: string | QueryBuilder): ExistsComparisonOperator {
-		return new ExistsComparisonOperator(subquery);
-	}
-
 	constructor(public readonly subquery: string | QueryBuilder) {
 		super();
 	}
@@ -19,4 +15,8 @@ export class ExistsComparisonOperator extends ComparisonOperator {
 		}
 		return `EXISTS (${subquery})`;
 	}
+}
+
+export function exists(subquery: string | QueryBuilder): ExistsComparisonOperator {
+	return new ExistsComparisonOperator(subquery);
 }

@@ -3,13 +3,6 @@ import { ColumnDefinition } from '../../definitions/column-definition';
 import { ComparisonOperator } from './comparison-operator';
 
 export class EqualsComparisonOperator extends ComparisonOperator {
-	public static eq(
-		leftValue: ColumnDefinition | string | number | Cast,
-		rightValue: ColumnDefinition | string | number | Cast
-	): EqualsComparisonOperator {
-		return new EqualsComparisonOperator(leftValue, rightValue);
-	}
-
 	constructor(
 		public readonly leftValue: ColumnDefinition | string | number | Cast,
 		public readonly rightValue: ColumnDefinition | string | number | Cast
@@ -33,4 +26,11 @@ export class EqualsComparisonOperator extends ComparisonOperator {
 			return `${value}`;
 		}
 	}
+}
+
+export function eq(
+	leftValue: string | number | ColumnDefinition | Cast,
+	rightValue: string | number | ColumnDefinition | Cast
+): EqualsComparisonOperator {
+	return new EqualsComparisonOperator(leftValue, rightValue);
 }

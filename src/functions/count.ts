@@ -1,10 +1,6 @@
 import { Function } from './function';
 
 export class CountFunction extends Function {
-	public static count(expression: string = '*'): CountFunction {
-		return new CountFunction(expression);
-	}
-
 	constructor(public readonly expression: string) {
 		super();
 	}
@@ -12,4 +8,8 @@ export class CountFunction extends Function {
 	public resolve(): string {
 		return `count('${this.expression}')`;
 	}
+}
+
+export function count(expression: string = '*'): CountFunction {
+	return new CountFunction(expression);
 }

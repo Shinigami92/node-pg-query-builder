@@ -3,10 +3,6 @@ import { QueryBuilder } from '../../query/query';
 import { ComparisonOperator } from './comparison-operator';
 
 export class GreaterThanComparisonOperator extends ComparisonOperator {
-	public static gt(column: ColumnDefinition, value: string | number | QueryBuilder): GreaterThanComparisonOperator {
-		return new GreaterThanComparisonOperator(column, value);
-	}
-
 	constructor(public readonly column: ColumnDefinition, public readonly value: string | number | QueryBuilder) {
 		super();
 	}
@@ -20,4 +16,8 @@ export class GreaterThanComparisonOperator extends ComparisonOperator {
 		}
 		return `${this.column.name} > ${value}`;
 	}
+}
+
+export function gt(column: ColumnDefinition, value: string | number | QueryBuilder): GreaterThanComparisonOperator {
+	return new GreaterThanComparisonOperator(column, value);
 }

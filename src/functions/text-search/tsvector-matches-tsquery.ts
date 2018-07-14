@@ -5,13 +5,6 @@ import { ToTsQueryFunction } from './to-tsquery';
 import { ToTsVectorFunction } from './to-tsvector';
 
 export class TsVectorMatchesTsQueryFunction extends TextSearchFunction {
-	public static tsvector_matches_tsquery(
-		tsvector: ToTsVectorFunction | TsVectorAliasReference,
-		tsquery: ToTsQueryFunction | TsQueryAliasReference
-	): TsVectorMatchesTsQueryFunction {
-		return new TsVectorMatchesTsQueryFunction(tsvector, tsquery);
-	}
-
 	constructor(
 		public readonly tsvector: ToTsVectorFunction | TsVectorAliasReference,
 		public readonly tsquery: ToTsQueryFunction | TsQueryAliasReference
@@ -34,4 +27,11 @@ export class TsVectorMatchesTsQueryFunction extends TextSearchFunction {
 		}
 		return `${tsvector} @@ ${tsquery}`;
 	}
+}
+
+export function tsvector_matches_tsquery(
+	tsvector: ToTsVectorFunction | TsVectorAliasReference,
+	tsquery: ToTsQueryFunction | TsQueryAliasReference
+): TsVectorMatchesTsQueryFunction {
+	return new TsVectorMatchesTsQueryFunction(tsvector, tsquery);
 }

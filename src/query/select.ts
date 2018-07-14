@@ -14,3 +14,9 @@ export class SelectQueryBuilder {
 		return new FromQueryBuilder(this, tableName);
 	}
 }
+
+export function select(
+	...selections: Array<ColumnDefinition | [string | TsRankCdFunction, AliasReference]>
+): SelectQueryBuilder {
+	return new SelectQueryBuilder(...selections);
+}

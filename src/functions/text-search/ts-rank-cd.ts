@@ -5,13 +5,6 @@ import { ToTsQueryFunction } from './to-tsquery';
 import { ToTsVectorFunction } from './to-tsvector';
 
 export class TsRankCdFunction extends TextSearchFunction {
-	public static ts_rank_cd(
-		textsearch: ToTsVectorFunction | TsVectorAliasReference,
-		query: ToTsQueryFunction | TsQueryAliasReference
-	): TsRankCdFunction {
-		return new TsRankCdFunction(textsearch, query);
-	}
-
 	constructor(
 		public readonly textsearch: ToTsVectorFunction | TsVectorAliasReference,
 		public readonly query: ToTsQueryFunction | TsQueryAliasReference
@@ -34,4 +27,11 @@ export class TsRankCdFunction extends TextSearchFunction {
 		}
 		return `ts_rank_cd(${textsearch}, ${query})`;
 	}
+}
+
+export function ts_rank_cd(
+	textsearch: ToTsVectorFunction | TsVectorAliasReference,
+	query: ToTsQueryFunction | TsQueryAliasReference
+): TsRankCdFunction {
+	return new TsRankCdFunction(textsearch, query);
 }

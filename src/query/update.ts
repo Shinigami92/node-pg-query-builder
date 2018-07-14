@@ -65,3 +65,7 @@ export class UpdateQueryBuilder extends QueryBuilder {
 		return sql;
 	}
 }
+
+export function update(tableName: string): UpdateQueryBuilder {
+	return new UpdateQueryBuilder(tableName);
+}
