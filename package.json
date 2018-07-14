@@ -4,11 +4,12 @@
 	"description": "A QueryBuilder for PostgreSQL written in TypeScript",
 	"main": "dist/index.js",
 	"scripts": {
-		"clean": "rimraf dist package-lock.json coverage .nyc_output node_modules && npm install",
+		"clean": "rimraf dist package-lock.json coverage .nyc_output docs node_modules && npm install",
 		"compile": "tsc",
 		"lint": "tslint --project tsconfig.json --force --format stylish",
 		"test": "mocha --reporter spec --require ts-node/register --colors \"test/**/*Test.ts\"",
-		"coverage": "rimraf coverage .nyc_output && nyc npm test"
+		"coverage": "rimraf coverage .nyc_output && nyc npm test",
+		"docs": "rimraf docs && typedoc --mode file --out docs src"
 	},
 	"repository": {
 		"type": "git",
@@ -39,6 +40,7 @@
 		"tslint": "~5.10.0",
 		"tslint-eslint-rules": "~5.3.1",
 		"tslint-language-service": "~0.9.9",
+		"typedoc": "~0.11.1",
 		"typescript": "~2.9.2"
 	}
 }
