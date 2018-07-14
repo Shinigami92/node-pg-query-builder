@@ -67,7 +67,6 @@ export class FromQueryBuilder extends QueryBuilder {
 					}
 					return stmt;
 				}
-				return '';
 			})
 			.join(prettySelection)}`;
 		sql += prettyBreak;
