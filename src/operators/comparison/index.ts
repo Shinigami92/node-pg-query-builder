@@ -10,7 +10,10 @@ export const between: {
 	BetweenComparisonOperator.between;
 
 import { EqualsComparisonOperator } from './equal';
-export const eq: (column: ColumnDefinition, value: string | number | Cast) => EqualsComparisonOperator =
+export const eq: (
+	leftValue: ColumnDefinition | string | number | Cast,
+	rightValue: ColumnDefinition | string | number | Cast
+) => EqualsComparisonOperator =
 	EqualsComparisonOperator.eq;
 
 import { ExistsComparisonOperator } from './exists';

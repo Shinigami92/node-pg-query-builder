@@ -3,23 +3,34 @@ import { ColumnDefinition } from '../../definitions/column-definition';
 import { ComparisonOperator } from './comparison-operator';
 
 export class EqualsComparisonOperator extends ComparisonOperator {
-	public static eq(column: ColumnDefinition, value: string | number | Cast): EqualsComparisonOperator {
-		return new EqualsComparisonOperator(column, value);
+	public static eq(
+		leftValue: ColumnDefinition | string | number | Cast,
+		rightValue: ColumnDefinition | string | number | Cast
+	): EqualsComparisonOperator {
+		return new EqualsComparisonOperator(leftValue, rightValue);
 	}
 
-	constructor(public readonly column: ColumnDefinition, public readonly value: string | number | Cast) {
+	constructor(
+		public readonly leftValue: ColumnDefinition | string | number | Cast,
+		public readonly rightValue: ColumnDefinition | string | number | Cast
+	) {
 		super();
 	}
 
 	public resolve(): string {
-		let value: string | number;
-		if (this.value instanceof Cast) {
-			value = this.value.resolve();
-		} else if (typeof this.value === 'string') {
-			value = `'${this.value}'`;
+		return `${this.resolveValue(this.leftValue)} = ${this.resolveValue(this.rightValue)}`;
+	}
+
+	private resolveValue(value: ColumnDefinition | string | number | Cast): string {
+		if (value instanceof Cast) {
+			return value.resolve();
+		} else if (value instanceof ColumnDefinition) {
+			return value.name;
+		} else if (typeof value === 'string') {
+			//TODO: escape string
+			return `'${value}'`;
 		} else {
-			value = this.value;
+			return `${value}`;
 		}
-		return `${this.column.name} = ${value}`;
 	}
 }
