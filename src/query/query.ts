@@ -4,6 +4,11 @@ export interface Aliasable {
 	[alias: string]: string | TsRankCdFunction;
 }
 
+export interface QueryConfig {
+	text: string;
+	values?: any[];
+}
+
 export interface ToSQLConfig {
 	pretty?: boolean;
 	semicolon?: boolean;
@@ -22,6 +27,8 @@ export abstract class QueryBuilder {
 		this._offset = offset;
 		return this;
 	}
+
+	public abstract toQuery(config?: ToSQLConfig): QueryConfig;
 
 	public abstract toSQL(config?: ToSQLConfig): string;
 }

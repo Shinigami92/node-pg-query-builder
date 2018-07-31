@@ -1,10 +1,28 @@
 import { ColumnDefinition } from '../../definitions/column-definition';
-import { QueryBuilder } from '../../query/query';
+import { QueryBuilder, QueryConfig } from '../../query/query';
+import { QueryResolution } from '../../resolvable';
 import { ComparisonOperator } from './comparison-operator';
 
 export class GreaterEqualComparisonOperator extends ComparisonOperator {
 	constructor(public readonly column: ColumnDefinition, public readonly value: string | number | QueryBuilder) {
 		super();
+	}
+
+	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
+		if (this.value instanceof QueryBuilder) {
+			const queryConfig: QueryConfig = this.value.toQuery({ semicolon: false });
+			const values: any[] = queryConfig.values || [];
+			return {
+				text: `${this.column.name} >= (${queryConfig.text})`,
+				valueIndex: valueIndex + values.length + 1,
+				values
+			};
+		}
+		return {
+			text: `${this.column.name} >= $${valueIndex++}`,
+			valueIndex,
+			values: [...values, this.value]
+		};
 	}
 
 	public resolve(): string {

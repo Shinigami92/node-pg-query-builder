@@ -5,9 +5,15 @@ import { TsRankCdFunction } from '../functions/text-search/ts-rank-cd';
 import { FromQueryBuilder } from './from';
 
 export class SelectQueryBuilder {
-	public readonly selects: Array<ColumnDefinition | [string | TsRankCdFunction, AliasReference | undefined]> = [];
+	public readonly selects: Array<
+		ColumnDefinition | [string | number | boolean | TsRankCdFunction, AliasReference | undefined]
+	> = [];
 
-	constructor(...selections: Array<ColumnDefinition | [string | TsRankCdFunction, AliasReference | undefined]>) {
+	constructor(
+		...selections: Array<
+			ColumnDefinition | [string | number | boolean | TsRankCdFunction, AliasReference | undefined]
+		>
+	) {
 		this.selects.push(...selections);
 	}
 	public from(tableName: TableDefinition): FromQueryBuilder {
@@ -16,7 +22,7 @@ export class SelectQueryBuilder {
 }
 
 export function select(
-	...selections: Array<ColumnDefinition | [string | TsRankCdFunction, AliasReference]>
+	...selections: Array<ColumnDefinition | [string | number | boolean | TsRankCdFunction, AliasReference]>
 ): SelectQueryBuilder {
 	return new SelectQueryBuilder(...selections);
 }

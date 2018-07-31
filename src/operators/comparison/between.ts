@@ -1,4 +1,5 @@
 import { ColumnDefinition } from '../../definitions/column-definition';
+import { QueryResolution } from '../../resolvable';
 import { ComparisonOperator } from './comparison-operator';
 
 export class BetweenComparisonOperator extends ComparisonOperator {
@@ -10,6 +11,14 @@ export class BetweenComparisonOperator extends ComparisonOperator {
 		public readonly y: string | number
 	) {
 		super();
+	}
+
+	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
+		return {
+			text: `${this.column.name} BETWEEN $${valueIndex++} AND $${valueIndex++}`,
+			valueIndex,
+			values: [...values, this.x, this.y]
+		};
 	}
 
 	public resolve(): string {

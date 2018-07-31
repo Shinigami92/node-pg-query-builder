@@ -1,6 +1,6 @@
 import { AliasReference } from '../definitions/alias-reference';
 import { ColumnDefinition } from '../definitions/column-definition';
-import { QueryBuilder, ToSQLConfig } from './query';
+import { QueryBuilder, QueryConfig, ToSQLConfig } from './query';
 import { WhereQueryBuilder } from './where';
 
 export type OrderDirection = 'ASC' | 'DESC' | null;
@@ -18,6 +18,44 @@ export class OrderByQueryBuilder extends QueryBuilder {
 	) {
 		super();
 		this.orders.push(...orders);
+	}
+
+	public toQuery({ pretty = false, semicolon = false }: ToSQLConfig = {}): QueryConfig {
+		const prettyOrders: string = pretty ? ',\n         ' : ', ';
+		const prettyBreak: string = pretty ? '\n' : ' ';
+		let sql: string = this.whereQueryBuilder.toSQL({ pretty, semicolon: false });
+		sql += prettyBreak;
+		sql += 'ORDER BY ';
+		sql += this.orders
+			.map((order: ColumnDefinition | [ColumnDefinition | AliasReference, OrderDirection]) => {
+				if (order instanceof ColumnDefinition) {
+					return `${order.name}`;
+				} else {
+					const link: ColumnDefinition | AliasReference = order[0];
+					const direction: OrderDirection = order[1];
+					let stmt: string = link instanceof ColumnDefinition ? link.name : link.aliasName;
+					if (direction !== null) {
+						stmt += ` ${direction}`;
+					}
+					return stmt;
+				}
+			})
+			.join(prettyOrders);
+		if (this._limit !== null) {
+			sql += prettyBreak;
+			sql += `LIMIT ${this._limit}`;
+		}
+		if (this._offset !== null) {
+			sql += prettyBreak;
+			sql += `OFFSET ${this._offset}`;
+		}
+		if (semicolon) {
+			sql += ';';
+		}
+		const queryConfig: QueryConfig = {
+			text: sql
+		};
+		return queryConfig;
 	}
 
 	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
