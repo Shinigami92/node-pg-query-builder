@@ -1,10 +1,15 @@
 import { Cast } from '../../data-types/cast';
+import { QueryResolution } from '../../resolvable';
 import { RegConfig } from './reg-config';
 import { TextSearchFunction } from './text-search-function';
 
 export class ToTsQueryFunction extends TextSearchFunction {
 	constructor(public readonly config: RegConfig, public readonly query: string | Cast) {
 		super();
+	}
+
+	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
+		throw new Error('Not supported yet');
 	}
 
 	public resolve(): string {

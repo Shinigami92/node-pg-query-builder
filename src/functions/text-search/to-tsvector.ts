@@ -1,10 +1,15 @@
 import { ColumnDefinition } from '../../definitions/column-definition';
+import { QueryResolution } from '../../resolvable';
 import { RegConfig } from './reg-config';
 import { TextSearchFunction } from './text-search-function';
 
 export class ToTsVectorFunction extends TextSearchFunction {
 	constructor(public readonly config: RegConfig, public readonly document: ColumnDefinition) {
 		super();
+	}
+
+	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
+		throw new Error('Not supported yet');
 	}
 
 	public resolve(): string {

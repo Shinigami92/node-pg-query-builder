@@ -1,5 +1,6 @@
 import { TsQueryAliasReference } from '../../definitions/tsquery-alias-reference';
 import { TsVectorAliasReference } from '../../definitions/tsvector-alias-reference';
+import { QueryResolution } from '../../resolvable';
 import { TextSearchFunction } from './text-search-function';
 import { ToTsQueryFunction } from './to-tsquery';
 import { ToTsVectorFunction } from './to-tsvector';
@@ -10,6 +11,10 @@ export class TsRankCdFunction extends TextSearchFunction {
 		public readonly query: ToTsQueryFunction | TsQueryAliasReference
 	) {
 		super();
+	}
+
+	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
+		throw new Error('Not supported yet');
 	}
 
 	public resolve(): string {
