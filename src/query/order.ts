@@ -23,7 +23,9 @@ export class OrderByQueryBuilder extends QueryBuilder {
 	public toQuery({ pretty = false, semicolon = false }: ToSQLConfig = {}): QueryConfig {
 		const prettyOrders: string = pretty ? ',\n         ' : ', ';
 		const prettyBreak: string = pretty ? '\n' : ' ';
-		let sql: string = this.whereQueryBuilder.toSQL({ pretty, semicolon: false });
+		const whereQueryConfig: QueryConfig = this.whereQueryBuilder.toQuery({ pretty, semicolon: false });
+		const values: any[] = whereQueryConfig.values || [];
+		let sql: string = whereQueryConfig.text;
 		sql += prettyBreak;
 		sql += 'ORDER BY ';
 		sql += this.orders
@@ -55,6 +57,9 @@ export class OrderByQueryBuilder extends QueryBuilder {
 		const queryConfig: QueryConfig = {
 			text: sql
 		};
+		if (values.length > 0) {
+			queryConfig.values = values;
+		}
 		return queryConfig;
 	}
 
