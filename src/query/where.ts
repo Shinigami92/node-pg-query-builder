@@ -8,7 +8,7 @@ import { OrderByQueryBuilder, OrderDirection } from './order';
 import { QueryBuilder, QueryConfig, ToSQLConfig } from './query';
 
 export class WhereQueryBuilder extends QueryBuilder {
-	constructor(private fromQueryBuilder: FromQueryBuilder, private condition: LogicalOperator | ComparisonOperator) {
+	constructor(private parentQueryBuilder: FromQueryBuilder, private condition: LogicalOperator | ComparisonOperator) {
 		super();
 	}
 
@@ -20,10 +20,10 @@ export class WhereQueryBuilder extends QueryBuilder {
 
 	public toQuery({ pretty = false, semicolon = false }: ToSQLConfig = {}): QueryConfig {
 		const prettyBreak: string = pretty ? '\n' : ' ';
-		const fromQueryConfig: QueryConfig = this.fromQueryBuilder.toQuery({ pretty, semicolon: false });
-		let values: any[] = fromQueryConfig.values || [];
+		const parentQueryConfig: QueryConfig = this.parentQueryBuilder.toQuery({ pretty, semicolon: false });
+		let values: any[] = parentQueryConfig.values || [];
 		let valueIndex: number = values.length + 1;
-		let sql: string = fromQueryConfig.text;
+		let sql: string = parentQueryConfig.text;
 		sql += prettyBreak;
 		sql += 'WHERE ';
 		const queryResolve: QueryResolution = this.condition.resolveQuery(valueIndex, values);
@@ -57,7 +57,7 @@ export class WhereQueryBuilder extends QueryBuilder {
 
 	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
 		const prettyBreak: string = pretty ? '\n' : ' ';
-		let sql: string = this.fromQueryBuilder.toSQL({ pretty, semicolon: false });
+		let sql: string = this.parentQueryBuilder.toSQL({ pretty, semicolon: false });
 		sql += prettyBreak;
 		sql += 'WHERE ';
 		const condition: string = this.condition.resolve();

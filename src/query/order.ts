@@ -1,5 +1,6 @@
 import { AliasReference } from '../definitions/alias-reference';
 import { ColumnDefinition } from '../definitions/column-definition';
+import { GroupByQueryBuilder } from './group';
 import { QueryBuilder, QueryConfig, ToSQLConfig } from './query';
 import { WhereQueryBuilder } from './where';
 
@@ -13,7 +14,7 @@ export class OrderByQueryBuilder extends QueryBuilder {
 	private readonly orders: Array<ColumnDefinition | [ColumnDefinition | AliasReference, OrderDirection]> = [];
 
 	constructor(
-		private readonly whereQueryBuilder: WhereQueryBuilder,
+		private readonly parentQueryBuilder: WhereQueryBuilder | GroupByQueryBuilder,
 		...orders: Array<ColumnDefinition | [ColumnDefinition | AliasReference, OrderDirection]>
 	) {
 		super();
@@ -23,9 +24,9 @@ export class OrderByQueryBuilder extends QueryBuilder {
 	public toQuery({ pretty = false, semicolon = false }: ToSQLConfig = {}): QueryConfig {
 		const prettyOrders: string = pretty ? ',\n         ' : ', ';
 		const prettyBreak: string = pretty ? '\n' : ' ';
-		const whereQueryConfig: QueryConfig = this.whereQueryBuilder.toQuery({ pretty, semicolon: false });
-		const values: any[] = whereQueryConfig.values || [];
-		let sql: string = whereQueryConfig.text;
+		const parentQueryConfig: QueryConfig = this.parentQueryBuilder.toQuery({ pretty, semicolon: false });
+		const values: any[] = parentQueryConfig.values || [];
+		let sql: string = parentQueryConfig.text;
 		sql += prettyBreak;
 		sql += 'ORDER BY ';
 		sql += this.orders
@@ -66,7 +67,7 @@ export class OrderByQueryBuilder extends QueryBuilder {
 	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {
 		const prettyOrders: string = pretty ? ',\n         ' : ', ';
 		const prettyBreak: string = pretty ? '\n' : ' ';
-		let sql: string = this.whereQueryBuilder.toSQL({ pretty, semicolon: false });
+		let sql: string = this.parentQueryBuilder.toSQL({ pretty, semicolon: false });
 		sql += prettyBreak;
 		sql += 'ORDER BY ';
 		sql += this.orders

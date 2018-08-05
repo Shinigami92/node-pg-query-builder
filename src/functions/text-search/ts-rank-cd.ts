@@ -14,7 +14,7 @@ export class TsRankCdFunction extends TextSearchFunction {
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		throw new Error('Not supported yet');
+		throw new Error('Method not implemented.');
 	}
 
 	public resolve(): string {

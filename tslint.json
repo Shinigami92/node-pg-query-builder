@@ -12,7 +12,8 @@
 		"no-unexpected-multiline": true,
 		"object-curly-spacing": [true, "always"],
 		"indent": {
-			"options": "tabs"
+			"options": "tabs",
+			"severity": "warn"
 		},
 		"interface-name": false,
 		"strict-type-predicates": true,
@@ -49,7 +50,8 @@
 				"member-variable-declaration",
 				"parameter",
 				"property-declaration",
-				"variable-declaration"
+				"variable-declaration",
+				"object-destructuring"
 			]
 		}
 	}
