@@ -2,9 +2,9 @@
 	"name": "@shinigami92/pg-query-builder",
 	"version": "0.1.0",
 	"description": "A QueryBuilder for PostgreSQL written in TypeScript",
-	"main": "dist/index.js",
+	"main": "lib/index.js",
 	"scripts": {
-		"clean": "rimraf dist package-lock.json coverage .nyc_output docs node_modules && npm install",
+		"clean": "rimraf lib package-lock.json coverage .nyc_output docs node_modules && npm install",
 		"compile": "tsc",
 		"lint": "tslint --project tsconfig.json --force --format stylish",
 		"test": "mocha --reporter spec --require ts-node/register --colors \"test/**/*Test.ts\"",

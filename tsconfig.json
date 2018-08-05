@@ -2,7 +2,7 @@
 	"compileOnSave": true,
 	"compilerOptions": {
 		"rootDir": "src",
-		"outDir": "dist",
+		"outDir": "lib",
 		"target": "es6",
 		"module": "commonjs",
 		"plugins": [
@@ -17,5 +17,5 @@
 		"sourceMap": true
 	},
 	"include": ["src/**/*.ts"],
-	"exclude": ["**/node_modules/**", "**/dist/**", "test"]
+	"exclude": ["**/node_modules/**", "**/lib/**", "test"]
 }
