@@ -56,17 +56,11 @@ export class FromQueryBuilder extends QueryBuilder {
 						const value: string | number | boolean | TsRankCdFunction = select[0];
 						const alias: AliasReference | undefined = select[1];
 						let stmt: string = '';
-						if (typeof value === 'string') {
-							stmt = `\$${valueIndex++}`;
-							values.push(value);
-						} else if (typeof value === 'number') {
-							stmt = `\$${valueIndex++}`;
-							values.push(value);
-						} else if (typeof value === 'boolean') {
-							stmt = `\$${valueIndex++}`;
-							values.push(value);
-						} else {
+						if (isResolvable(value)) {
 							stmt = value.resolve();
+						} else {
+							stmt = `$${valueIndex++}`;
+							values.push(value);
 						}
 						if (alias !== undefined) {
 							stmt += ` AS ${alias.aliasName}`;
@@ -139,14 +133,12 @@ export class FromQueryBuilder extends QueryBuilder {
 						const value: string | number | boolean | TsRankCdFunction = select[0];
 						const alias: AliasReference | undefined = select[1];
 						let stmt: string = '';
-						if (typeof value === 'string') {
-							stmt = value;
-						} else if (typeof value === 'number') {
-							stmt = `${value}`;
-						} else if (typeof value === 'boolean') {
-							stmt = `${value}`;
-						} else {
+						if (isResolvable(value)) {
 							stmt = value.resolve();
+						} else if (typeof value === 'string') {
+							stmt = value;
+						} else {
+							stmt = `${value}`;
 						}
 						if (alias !== undefined) {
 							stmt += ` AS ${alias.aliasName}`;
@@ -167,9 +159,7 @@ export class FromQueryBuilder extends QueryBuilder {
 			sql += this.joins
 				.map((join: Join) => {
 					let tableName: string;
-					if (join.tableName instanceof ToTsVectorFunction) {
-						tableName = join.tableName.resolve();
-					} else if (join.tableName instanceof ToTsQueryFunction) {
+					if (isResolvable(join.tableName)) {
 						tableName = join.tableName.resolve();
 					} else {
 						tableName = join.tableName;
