@@ -6,7 +6,7 @@ import { ToTsVectorFunction } from '../functions/text-search/to-tsvector';
 import { TsRankCdFunction } from '../functions/text-search/ts-rank-cd';
 import { ComparisonOperator } from '../operators/comparison/comparison-operator';
 import { LogicalOperator } from '../operators/logical/logical-operator';
-import { QueryResolution } from '../resolvable';
+import { isResolvable, QueryResolution } from '../resolvable';
 import { QueryBuilder, QueryConfig, ToSQLConfig } from './query';
 import { SelectQueryBuilder } from './select';
 import { WhereQueryBuilder } from './where';
@@ -87,12 +87,7 @@ export class FromQueryBuilder extends QueryBuilder {
 			sql += this.joins
 				.map((join: Join) => {
 					let tableName: string;
-					if (join.tableName instanceof ToTsVectorFunction) {
-						const resolution: QueryResolution = join.tableName.resolveQuery(valueIndex, values);
-						tableName = resolution.text;
-						valueIndex = resolution.valueIndex;
-						values = [...resolution.values];
-					} else if (join.tableName instanceof ToTsQueryFunction) {
+					if (isResolvable(join.tableName)) {
 						const resolution: QueryResolution = join.tableName.resolveQuery(valueIndex, values);
 						tableName = resolution.text;
 						valueIndex = resolution.valueIndex;
