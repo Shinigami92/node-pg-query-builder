@@ -14,7 +14,29 @@ export class TsVectorMatchesTsQueryFunction extends TextSearchFunction {
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		throw new Error('Not supported yet');
+		const texts: [string, string] = ['', ''];
+		const innerValues: any[] = [];
+		if (this.tsvector instanceof TsVectorAliasReference) {
+			texts[0] = this.tsvector.aliasName;
+		} else {
+			const resolution: QueryResolution = this.tsvector.resolveQuery(valueIndex, values);
+			texts[0] = resolution.text;
+			valueIndex = resolution.valueIndex;
+			innerValues.push(...resolution.values);
+		}
+		if (this.tsquery instanceof TsQueryAliasReference) {
+			texts[1] = this.tsquery.aliasName;
+		} else {
+			const resolution: QueryResolution = this.tsquery.resolveQuery(valueIndex, values);
+			texts[1] = resolution.text;
+			valueIndex = resolution.valueIndex;
+			innerValues.push(...resolution.values);
+		}
+		return {
+			text: texts.join(' @@ '),
+			valueIndex,
+			values: [...values, ...innerValues]
+		};
 	}
 
 	public resolve(): string {

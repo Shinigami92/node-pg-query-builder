@@ -8,7 +8,7 @@ export class Cast implements Resolvable {
 		return {
 			text: `$${valueIndex++}::${this.type.definition}`,
 			valueIndex,
-			values: [...values, this.value]
+			values: [this.value]
 		};
 	}
 

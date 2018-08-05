@@ -9,7 +9,23 @@ export class ToTsQueryFunction extends TextSearchFunction {
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		throw new Error('Not supported yet');
+		let text: string;
+		const innerValues: any[] = [];
+		if (this.query instanceof Cast) {
+			const resolution: QueryResolution = this.query.resolveQuery(valueIndex, values);
+			text = resolution.text;
+			valueIndex = resolution.valueIndex;
+			innerValues.push(...resolution.values);
+		} else {
+			text = `$${valueIndex++}`;
+			const value: string = this.query;
+			innerValues.push(value);
+		}
+		return {
+			text: `to_tsquery('${this.config}', ${text})`,
+			valueIndex,
+			values: [...values, ...innerValues]
+		};
 	}
 
 	public resolve(): string {

@@ -6,6 +6,7 @@ import { ToTsVectorFunction } from '../functions/text-search/to-tsvector';
 import { TsRankCdFunction } from '../functions/text-search/ts-rank-cd';
 import { ComparisonOperator } from '../operators/comparison/comparison-operator';
 import { LogicalOperator } from '../operators/logical/logical-operator';
+import { QueryResolution } from '../resolvable';
 import { QueryBuilder, QueryConfig, ToSQLConfig } from './query';
 import { SelectQueryBuilder } from './select';
 import { WhereQueryBuilder } from './where';
@@ -15,7 +16,7 @@ export enum JoinType {
 }
 
 export interface Join {
-	tableName: string;
+	tableName: string | ToTsQueryFunction | ToTsVectorFunction;
 	alias: AliasReference;
 	type: JoinType;
 }
@@ -28,16 +29,7 @@ export class FromQueryBuilder extends QueryBuilder {
 	}
 
 	public crossJoin(tableName: string | ToTsQueryFunction | ToTsVectorFunction, alias: AliasReference): this {
-		if (tableName instanceof ToTsQueryFunction) {
-			tableName = tableName.resolve();
-		} else if (tableName instanceof ToTsVectorFunction) {
-			tableName = tableName.resolve();
-		}
-		this.joins.push({
-			tableName,
-			alias,
-			type: JoinType.CROSS_JOIN
-		});
+		this.joins.push({ tableName, alias, type: JoinType.CROSS_JOIN });
 		return this;
 	}
 
@@ -48,7 +40,7 @@ export class FromQueryBuilder extends QueryBuilder {
 	public toQuery({ pretty = false, semicolon = false }: ToSQLConfig = {}): QueryConfig {
 		const prettySelection: string = pretty ? ',\n       ' : ', ';
 		const prettyBreak: string = pretty ? '\n' : ' ';
-		const values: any[] = [];
+		let values: any[] = [];
 		let valueIndex: number = 1;
 		let sql: string = '';
 		sql += `SELECT ${this.selectQueryBuilder.selects
@@ -94,9 +86,23 @@ export class FromQueryBuilder extends QueryBuilder {
 			sql += prettyBreak;
 			sql += this.joins
 				.map((join: Join) => {
+					let tableName: string;
+					if (join.tableName instanceof ToTsVectorFunction) {
+						const resolution: QueryResolution = join.tableName.resolveQuery(valueIndex, values);
+						tableName = resolution.text;
+						valueIndex = resolution.valueIndex;
+						values = [...resolution.values];
+					} else if (join.tableName instanceof ToTsQueryFunction) {
+						const resolution: QueryResolution = join.tableName.resolveQuery(valueIndex, values);
+						tableName = resolution.text;
+						valueIndex = resolution.valueIndex;
+						values = [...resolution.values];
+					} else {
+						tableName = join.tableName;
+					}
 					switch (join.type) {
 						case JoinType.CROSS_JOIN:
-							return `CROSS JOIN ${join.tableName} AS ${join.alias.aliasName}`;
+							return `CROSS JOIN ${tableName} AS ${join.alias.aliasName}`;
 					}
 				})
 				.join(prettyBreak);
@@ -165,9 +171,17 @@ export class FromQueryBuilder extends QueryBuilder {
 			sql += prettyBreak;
 			sql += this.joins
 				.map((join: Join) => {
+					let tableName: string;
+					if (join.tableName instanceof ToTsVectorFunction) {
+						tableName = join.tableName.resolve();
+					} else if (join.tableName instanceof ToTsQueryFunction) {
+						tableName = join.tableName.resolve();
+					} else {
+						tableName = join.tableName;
+					}
 					switch (join.type) {
 						case JoinType.CROSS_JOIN:
-							return `CROSS JOIN ${join.tableName} AS ${join.alias.aliasName}`;
+							return `CROSS JOIN ${tableName} AS ${join.alias.aliasName}`;
 					}
 				})
 				.join(prettyBreak);

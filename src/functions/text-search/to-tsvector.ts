@@ -9,7 +9,11 @@ export class ToTsVectorFunction extends TextSearchFunction {
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		throw new Error('Not supported yet');
+		return {
+			text: `to_tsvector('${this.config}', ${this.document.name})`,
+			valueIndex,
+			values: [...values]
+		};
 	}
 
 	public resolve(): string {
