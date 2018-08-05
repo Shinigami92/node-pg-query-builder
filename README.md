@@ -17,6 +17,23 @@ $ npm install --save @shinigami92/pg-query-builder
 
 ---
 
+## Status of the project
+
+The project is currently under construction
+
+Following needs to be implemented:
+
+-   [ ] Some missing comparison operators
+-   [ ] Missing DataTypes
+-   [ ] Implement joins
+    -   [x] CROSS JOIN
+    -   [ ] INNER JOIN
+    -   [ ] LEFT JOIN
+    -   [ ] RIGHT JOIN
+-   [ ] Test coverage close to 100%
+-   [ ] Mutable QueryBuilders (INSERT, UPDATE, DELETE)
+-   [ ] TypeDocs
+
 ## How-To
 
 ```ts
