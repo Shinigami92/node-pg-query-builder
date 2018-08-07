@@ -81,7 +81,12 @@ export class FromQueryBuilder extends QueryBuilder {
 						const alias: AliasReference | undefined = select[1];
 						let stmt: string = '';
 						if (isResolvable(value)) {
-							stmt = value.resolve();
+							const resolution: QueryResolution = value.resolveQuery(valueIndex, values);
+							valueIndex = resolution.valueIndex;
+							values = [...resolution.values];
+							stmt = resolution.text;
+						} else if (value instanceof ColumnDefinition) {
+							stmt = value.name;
 						} else {
 							stmt = `$${valueIndex++}`;
 							values.push(value);

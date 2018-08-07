@@ -8,7 +8,12 @@ export class MaxFunction extends AggregateFunction {
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		throw new Error('Method not implemented.');
+		const text: string = this.expression.name;
+		return {
+			text: `max(${text})`,
+			valueIndex,
+			values: [...values]
+		};
 	}
 
 	public resolve(): string {

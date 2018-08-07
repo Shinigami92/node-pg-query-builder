@@ -14,7 +14,33 @@ export class TsRankCdFunction extends TextSearchFunction {
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		throw new Error('Method not implemented.');
+		let textsearch: string;
+		let query: string;
+		const innerValues: any[] = [];
+
+		if (this.textsearch instanceof TsVectorAliasReference) {
+			textsearch = this.textsearch.aliasName;
+		} else {
+			const resolution: QueryResolution = this.textsearch.resolveQuery(valueIndex, values);
+			textsearch = resolution.text;
+			valueIndex = resolution.valueIndex;
+			innerValues.push(...resolution.values);
+		}
+
+		if (this.query instanceof TsQueryAliasReference) {
+			query = this.query.aliasName;
+		} else {
+			const resolution: QueryResolution = this.query.resolveQuery(valueIndex, [...values, ...innerValues]);
+			query = resolution.text;
+			valueIndex = resolution.valueIndex;
+			innerValues.push(...resolution.values);
+		}
+
+		return {
+			text: `ts_rank_cd(${textsearch}, ${query})`,
+			valueIndex,
+			values: [...values, ...innerValues]
+		};
 	}
 
 	public resolve(): string {

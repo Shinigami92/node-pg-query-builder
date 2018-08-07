@@ -6,10 +6,21 @@ export class Cast implements Resolvable {
 	constructor(public readonly value: string | AggregateFunction, public readonly type: DataType) {}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
+		let text: string;
+		const innerValues: any[] = [];
+		if (this.value instanceof AggregateFunction) {
+			const resolution: QueryResolution = this.value.resolveQuery(valueIndex, values);
+			text = resolution.text;
+			valueIndex = resolution.valueIndex;
+			innerValues.push(...resolution.values);
+		} else {
+			text = `$${valueIndex++}`;
+			innerValues.push(this.value);
+		}
 		return {
-			text: `$${valueIndex++}::${this.type.definition}`,
+			text: `${text}::${this.type.definition}`,
 			valueIndex,
-			values: [this.value]
+			values: [...innerValues]
 		};
 	}
 

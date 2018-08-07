@@ -19,7 +19,32 @@ export class GroupByQueryBuilder extends QueryBuilder {
 	}
 
 	public toQuery({ pretty = false, semicolon = false }: ToSQLConfig = {}): QueryConfig {
-		throw new Error('Method not implemented.');
+		const prettyOrders: string = pretty ? ',\n         ' : ', ';
+		const prettyBreak: string = pretty ? '\n' : ' ';
+		const parentQueryConfig: QueryConfig = this.parentQueryBuilder.toQuery({ pretty, semicolon: false });
+		const values: any[] = parentQueryConfig.values || [];
+		let sql: string = parentQueryConfig.text;
+		sql += prettyBreak;
+		sql += 'GROUP BY ';
+		sql += this.groupings.map((group: ColumnDefinition) => group.name).join(prettyOrders);
+		if (this._limit !== null) {
+			sql += prettyBreak;
+			sql += `LIMIT ${this._limit}`;
+		}
+		if (this._offset !== null) {
+			sql += prettyBreak;
+			sql += `OFFSET ${this._offset}`;
+		}
+		if (semicolon) {
+			sql += ';';
+		}
+		const queryConfig: QueryConfig = {
+			text: sql
+		};
+		if (values.length > 0) {
+			queryConfig.values = values;
+		}
+		return queryConfig;
 	}
 
 	public toSQL({ pretty = false, semicolon = false }: ToSQLConfig = {}): string {

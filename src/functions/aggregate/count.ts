@@ -8,7 +8,19 @@ export class CountFunction extends AggregateFunction {
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		throw new Error('Method not implemented.');
+		let text: string;
+		const innerValues: any[] = [];
+		if (this.expression instanceof ColumnDefinition) {
+			text = this.expression.name;
+		} else {
+			text = `$${valueIndex++}`;
+			innerValues.push(this.expression);
+		}
+		return {
+			text: `count(${text})`,
+			valueIndex,
+			values: [...values, ...innerValues]
+		};
 	}
 
 	public resolve(): string {

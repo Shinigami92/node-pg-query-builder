@@ -12,6 +12,7 @@ import {
 	NUMERIC,
 	NumericType,
 	QueryBuilder,
+	QueryConfig,
 	select,
 	TableDefinition,
 	TEXT
@@ -54,25 +55,26 @@ const asPriceMeasureCount: AliasReference = new AliasReference('price_measure_co
 const NUMERIC_8_3: NumericType = new NumericType(8, 3);
 
 describe('CustomTest', function(): void {
-	it('should be correct', function(): void {
-		const query: QueryBuilder = select(
-			[Commodity.name, asCommodityName],
-			[Commodity.category, asCommodityCategory],
-			[Location.name, asLocationName],
-			[cast(min(Buy.price), NUMERIC_8_3), asMinPrice],
-			[cast(max(Buy.price), NUMERIC_8_3), asMaxPrice],
-			[cast(avg(Buy.price), NUMERIC_8_3), asAvgPrice],
-			[count(Buy.price), asPriceMeasureCount]
-		)
-			.from(Buy)
-			.join(Location, eq(Location.id, Buy.location_id))
-			.join(Commodity, eq(Commodity.id, Buy.commodity_id))
-			.groupBy(Location.name, Commodity.name, Commodity.category)
-			.orderBy(Commodity.name, Location.name);
+	describe('toSQL', function(): void {
+		it('should be correct', function(): void {
+			const query: QueryBuilder = select(
+				[Commodity.name, asCommodityName],
+				[Commodity.category, asCommodityCategory],
+				[Location.name, asLocationName],
+				[cast(min(Buy.price), NUMERIC_8_3), asMinPrice],
+				[cast(max(Buy.price), NUMERIC_8_3), asMaxPrice],
+				[cast(avg(Buy.price), NUMERIC_8_3), asAvgPrice],
+				[count(Buy.price), asPriceMeasureCount]
+			)
+				.from(Buy)
+				.join(Location, eq(Location.id, Buy.location_id))
+				.join(Commodity, eq(Commodity.id, Buy.commodity_id))
+				.groupBy(Location.name, Commodity.name, Commodity.category)
+				.orderBy(Commodity.name, Location.name);
 
-		const sql: string = query.toSQL({ pretty: true });
+			const sql: string = query.toSQL({ pretty: true });
 
-		const sqlString: string = `SELECT c.name AS commodity_name,
+			const sqlString: string = `SELECT c.name AS commodity_name,
        c.category AS commodity_category,
        l.name AS location_name,
        min(b.price)::numeric(8, 3) AS min_price,
@@ -88,6 +90,46 @@ GROUP BY l.name,
 ORDER BY c.name,
          l.name`;
 
-		expect(sql).to.equal(sqlString);
+			expect(sql).to.equal(sqlString);
+		});
+	});
+
+	describe('toQuery', function(): void {
+		it('should be correct', function(): void {
+			const query: QueryBuilder = select(
+				[Commodity.name, asCommodityName],
+				[Commodity.category, asCommodityCategory],
+				[Location.name, asLocationName],
+				[cast(min(Buy.price), NUMERIC_8_3), asMinPrice],
+				[cast(max(Buy.price), NUMERIC_8_3), asMaxPrice],
+				[cast(avg(Buy.price), NUMERIC_8_3), asAvgPrice],
+				[count(Buy.price), asPriceMeasureCount]
+			)
+				.from(Buy)
+				.join(Location, eq(Location.id, Buy.location_id))
+				.join(Commodity, eq(Commodity.id, Buy.commodity_id))
+				.groupBy(Location.name, Commodity.name, Commodity.category)
+				.orderBy(Commodity.name, Location.name);
+
+			const queryConfig: QueryConfig = query.toQuery({ pretty: true });
+
+			const sqlString: string = `SELECT c.name AS commodity_name,
+       c.category AS commodity_category,
+       l.name AS location_name,
+       min(b.price)::numeric(8, 3) AS min_price,
+       max(b.price)::numeric(8, 3) AS max_price,
+       avg(b.price)::numeric(8, 3) AS avg_price,
+       count(b.price) AS price_measure_count
+FROM buy AS b
+INNER JOIN location AS l ON l.id = b.location_id
+INNER JOIN commodity AS c ON c.id = b.commodity_id
+GROUP BY l.name,
+         c.name,
+         c.category
+ORDER BY c.name,
+         l.name`;
+
+			expect(queryConfig).to.deep.equal({ text: sqlString });
+		});
 	});
 });

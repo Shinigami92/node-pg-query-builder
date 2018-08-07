@@ -12,7 +12,22 @@ export class InnerJoin extends Join {
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		throw new Error('Method not implemented.');
+		const resolution: QueryResolution = this.onExpression.resolveQuery(valueIndex, values);
+		const text: string = resolution.text;
+		valueIndex = resolution.valueIndex;
+		const innerValues: any[] = [];
+		innerValues.push(...resolution.values);
+
+		let alias: string = '';
+		if (this.tableDefinition.alias) {
+			alias = ` AS ${this.tableDefinition.alias.aliasName}`;
+		}
+
+		return {
+			text: `INNER JOIN ${this.tableDefinition.tableName}${alias} ON ${text}`,
+			valueIndex,
+			values: [...innerValues]
+		};
 	}
 
 	public resolve(): string {
