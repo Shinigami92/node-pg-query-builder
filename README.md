@@ -21,7 +21,7 @@ $ npm install --save @shinigami92/pg-query-builder
 
 The project is currently under construction
 
-Following needs to be implemented:
+Following needs to be implemented for 1.0.0:
 
 -   [ ] Some missing comparison operators
 -   [ ] Missing DataTypes
@@ -31,8 +31,14 @@ Following needs to be implemented:
     -   [ ] LEFT JOIN
     -   [ ] RIGHT JOIN
 -   [ ] Test coverage close to 100%
--   [ ] Mutable QueryBuilders (INSERT, UPDATE, DELETE)
 -   [ ] TypeDocs
+
+Planned for the future:
+
+-   1.1.0
+    -   Mutable QueryBuilders (INSERT, UPDATE, DELETE)
+-   1.2.0
+    -   Window Functions
 
 ## How-To
 
