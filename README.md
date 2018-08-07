@@ -27,7 +27,7 @@ Following needs to be implemented for 1.0.0:
 -   [ ] Missing DataTypes
 -   [ ] Implement joins
     -   [x] CROSS JOIN
-    -   [ ] INNER JOIN
+    -   [x] INNER JOIN
     -   [ ] LEFT JOIN
     -   [ ] RIGHT JOIN
 -   [ ] Test coverage close to 100%
