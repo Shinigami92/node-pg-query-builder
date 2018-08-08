@@ -41,7 +41,12 @@ Planned for the future:
     -   Window Functions
 -   Backlog
     -   Having
-	-   Union
+    -   Union
+    -   Distinct
+    -   Mathematical Functions and Operators
+    -   String Functions and Operators
+    -   JSON Functions and Operators
+    -   ...
 
 ## How-To
 
