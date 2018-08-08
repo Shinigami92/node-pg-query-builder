@@ -39,6 +39,9 @@ Planned for the future:
     -   Mutable QueryBuilders (INSERT, UPDATE, DELETE)
 -   1.2.0
     -   Window Functions
+-   Backlog
+    -   Having
+	-   Union
 
 ## How-To
 
