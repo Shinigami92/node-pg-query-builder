@@ -23,7 +23,7 @@ The project is currently under construction
 
 Following needs to be implemented for 1.0.0:
 
--   [ ] Some missing comparison operators
+-   [x] Some missing comparison operators
 -   [ ] Missing DataTypes
 -   [ ] Implement joins
     -   [x] CROSS JOIN
