@@ -1,41 +1,12 @@
-import { ColumnDefinition } from '../../definitions/column-definition';
-import { QueryBuilder, QueryConfig } from '../../query/query';
-import { QueryResolution } from '../../resolvable';
+import { QueryableValue } from '../../queryable';
 import { ComparisonOperator } from './comparison-operator';
 
 export class GreaterThanComparisonOperator extends ComparisonOperator {
-	constructor(public readonly column: ColumnDefinition, public readonly value: string | number | QueryBuilder) {
-		super();
-	}
-
-	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
-		if (this.value instanceof QueryBuilder) {
-			const queryConfig: QueryConfig = this.value.toQuery({ semicolon: false });
-			const values: any[] = queryConfig.values || [];
-			return {
-				text: `${this.column.name} > (${queryConfig.text})`,
-				valueIndex: valueIndex + values.length + 1,
-				values
-			};
-		}
-		return {
-			text: `${this.column.name} > $${valueIndex++}`,
-			valueIndex,
-			values: [...values, this.value]
-		};
-	}
-
-	public resolve(): string {
-		let value: string | number;
-		if (this.value instanceof QueryBuilder) {
-			value = `(${this.value.toSQL({ semicolon: false })})`;
-		} else {
-			value = this.value;
-		}
-		return `${this.column.name} > ${value}`;
+	constructor(readonly leftValue: QueryableValue, readonly rightValue: QueryableValue) {
+		super(leftValue, rightValue, '>');
 	}
 }
 
-export function gt(column: ColumnDefinition, value: string | number | QueryBuilder): GreaterThanComparisonOperator {
-	return new GreaterThanComparisonOperator(column, value);
+export function gt(leftValue: QueryableValue, rightValue: QueryableValue): GreaterThanComparisonOperator {
+	return new GreaterThanComparisonOperator(leftValue, rightValue);
 }

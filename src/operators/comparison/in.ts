@@ -1,8 +1,8 @@
 import { ColumnDefinition } from '../../definitions/column-definition';
 import { QueryResolution } from '../../resolvable';
-import { ComparisonOperator } from './comparison-operator';
+import { ComparisonPredicate } from './comparison-predicate';
 
-export class InComparisonOperator extends ComparisonOperator {
+export class InComparisonPredicate extends ComparisonPredicate {
 	constructor(public readonly column: ColumnDefinition, public readonly values: ReadonlyArray<string | number>) {
 		super();
 	}
@@ -20,6 +20,6 @@ export class InComparisonOperator extends ComparisonOperator {
 	}
 }
 
-export function inList(column: ColumnDefinition, values: ReadonlyArray<string | number>): InComparisonOperator {
-	return new InComparisonOperator(column, values);
+export function inList(column: ColumnDefinition, values: ReadonlyArray<string | number>): InComparisonPredicate {
+	return new InComparisonPredicate(column, values);
 }

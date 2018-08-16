@@ -16,3 +16,5 @@ export * from './query';
 
 // Definitions
 export * from './definitions';
+
+export * from './queryable';

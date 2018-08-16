@@ -1,8 +1,8 @@
 import { ColumnDefinition } from '../../definitions';
 import { QueryResolution } from '../../resolvable';
-import { ComparisonOperator } from './comparison-operator';
+import { ComparisonPredicate } from './comparison-predicate';
 
-export class IsNullComparisonOperator extends ComparisonOperator {
+export class IsNullComparisonPredicate extends ComparisonPredicate {
 	constructor(public readonly column: ColumnDefinition) {
 		super();
 	}
@@ -20,6 +20,6 @@ export class IsNullComparisonOperator extends ComparisonOperator {
 	}
 }
 
-export function isNull(column: ColumnDefinition): IsNullComparisonOperator {
-	return new IsNullComparisonOperator(column);
+export function isNull(column: ColumnDefinition): IsNullComparisonPredicate {
+	return new IsNullComparisonPredicate(column);
 }

@@ -1,8 +1,8 @@
 import { ColumnDefinition } from '../../definitions/column-definition';
 import { QueryResolution } from '../../resolvable';
-import { ComparisonOperator } from './comparison-operator';
+import { ComparisonPredicate } from './comparison-predicate';
 
-export class LikeComparisonOperator extends ComparisonOperator {
+export class LikeComparisonPredicate extends ComparisonPredicate {
 	constructor(public readonly column: ColumnDefinition, public readonly value: string) {
 		super();
 	}
@@ -20,6 +20,6 @@ export class LikeComparisonOperator extends ComparisonOperator {
 	}
 }
 
-export function like(column: ColumnDefinition, value: string): LikeComparisonOperator {
-	return new LikeComparisonOperator(column, value);
+export function like(column: ColumnDefinition, value: string): LikeComparisonPredicate {
+	return new LikeComparisonPredicate(column, value);
 }

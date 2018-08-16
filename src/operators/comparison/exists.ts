@@ -1,8 +1,8 @@
 import { QueryBuilder, QueryConfig } from '../../query/query';
 import { QueryResolution } from '../../resolvable';
-import { ComparisonOperator } from './comparison-operator';
+import { ComparisonPredicate } from './comparison-predicate';
 
-export class ExistsComparisonOperator extends ComparisonOperator {
+export class ExistsComparisonPredicate extends ComparisonPredicate {
 	constructor(public readonly subquery: string | QueryBuilder) {
 		super();
 	}
@@ -35,6 +35,6 @@ export class ExistsComparisonOperator extends ComparisonOperator {
 	}
 }
 
-export function exists(subquery: string | QueryBuilder): ExistsComparisonOperator {
-	return new ExistsComparisonOperator(subquery);
+export function exists(subquery: string | QueryBuilder): ExistsComparisonPredicate {
+	return new ExistsComparisonPredicate(subquery);
 }

@@ -1,8 +1,8 @@
 import { ColumnDefinition } from '../../definitions/column-definition';
 import { QueryResolution } from '../../resolvable';
-import { ComparisonOperator } from './comparison-operator';
+import { ComparisonPredicate } from './comparison-predicate';
 
-export class BetweenComparisonOperator extends ComparisonOperator {
+export class BetweenComparisonPredicate extends ComparisonPredicate {
 	constructor(column: ColumnDefinition, x: number, y: number);
 	constructor(column: ColumnDefinition, x: string, y: string);
 	constructor(
@@ -29,8 +29,8 @@ export class BetweenComparisonOperator extends ComparisonOperator {
 	}
 }
 
-export function between(column: ColumnDefinition, x: number, y: number): BetweenComparisonOperator;
-export function between(column: ColumnDefinition, x: string, y: string): BetweenComparisonOperator;
-export function between(column: ColumnDefinition, x: any, y: any): BetweenComparisonOperator {
-	return new BetweenComparisonOperator(column, x, y);
+export function between(column: ColumnDefinition, x: number, y: number): BetweenComparisonPredicate;
+export function between(column: ColumnDefinition, x: string, y: string): BetweenComparisonPredicate;
+export function between(column: ColumnDefinition, x: any, y: any): BetweenComparisonPredicate {
+	return new BetweenComparisonPredicate(column, x, y);
 }
