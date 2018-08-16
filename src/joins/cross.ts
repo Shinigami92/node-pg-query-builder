@@ -9,7 +9,7 @@ export class CrossJoin extends Join {
 		private readonly tableName: string | ToTsQueryFunction | ToTsVectorFunction,
 		private readonly alias: AliasReference
 	) {
-		super();
+		super('CROSS');
 	}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {

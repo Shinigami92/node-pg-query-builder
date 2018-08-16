@@ -25,11 +25,11 @@ Following needs to be implemented for 1.0.0:
 
 -   [x] Some missing comparison operators
 -   [ ] Missing DataTypes
--   [ ] Implement joins
+-   [x] Implement joins
     -   [x] CROSS JOIN
     -   [x] INNER JOIN
-    -   [ ] LEFT JOIN
-    -   [ ] RIGHT JOIN
+    -   [x] LEFT JOIN
+    -   [x] RIGHT JOIN
 -   [ ] Test coverage close to 100%
 -   [ ] TypeDocs
 
