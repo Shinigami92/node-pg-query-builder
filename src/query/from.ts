@@ -112,6 +112,10 @@ export class FromQueryBuilder extends QueryBuilder {
 		if (this.fromClause instanceof FunctionDefinition) {
 			sql += `(${(this.parameters || [])
 				.map((p: any) => {
+					if (p instanceof Cast) {
+						values.push(p.value);
+						return `$${valueIndex++}::${p.type.definition}`;
+					}
 					values.push(p);
 					return `$${valueIndex++}`;
 				})

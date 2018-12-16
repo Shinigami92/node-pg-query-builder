@@ -3,7 +3,7 @@ import { QueryResolution, Resolvable } from '../resolvable';
 import { DataType } from './data-type';
 
 export class Cast implements Resolvable {
-	constructor(public readonly value: string | AggregateFunction, public readonly type: DataType) {}
+	constructor(public readonly value: string | AggregateFunction | null, public readonly type: DataType) {}
 
 	public resolveQuery(valueIndex: number, values: ReadonlyArray<any>): QueryResolution {
 		let text: string;
@@ -28,6 +28,8 @@ export class Cast implements Resolvable {
 		let text: string;
 		if (this.value instanceof AggregateFunction) {
 			text = this.value.resolve();
+		} else if (this.value === null) {
+			text = 'null';
 		} else {
 			text = `'${this.value}'`;
 		}
@@ -35,6 +37,6 @@ export class Cast implements Resolvable {
 	}
 }
 
-export function cast(value: string | AggregateFunction, type: DataType): Cast {
+export function cast(value: string | AggregateFunction | null, type: DataType): Cast {
 	return new Cast(value, type);
 }
