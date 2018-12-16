@@ -25,7 +25,7 @@ export abstract class Join implements Resolvable {
 		}
 
 		return {
-			text: `${this.joinType} JOIN ${this.tableDefinition.tableName}${alias} ON ${text}`,
+			text: `${this.joinType} JOIN ${this.tableDefinition.__name}${alias} ON ${text}`,
 			valueIndex,
 			values: [...innerValues]
 		};
@@ -39,6 +39,6 @@ export abstract class Join implements Resolvable {
 		if (this.tableDefinition.alias) {
 			alias = ` AS ${this.tableDefinition.alias.aliasName}`;
 		}
-		return `${this.joinType} JOIN ${this.tableDefinition.tableName}${alias} ON ${this.onExpression.resolve()}`;
+		return `${this.joinType} JOIN ${this.tableDefinition.__name}${alias} ON ${this.onExpression.resolve()}`;
 	}
 }

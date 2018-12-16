@@ -1,6 +1,8 @@
 import { Cast } from '../data-types/cast';
 import { AliasReference } from '../definitions/alias-reference';
 import { ColumnDefinition } from '../definitions/column-definition';
+import { FunctionDefinition } from '../definitions/function-definition';
+import { SourceDefinition } from '../definitions/source-definition';
 import { TableDefinition } from '../definitions/table-definition';
 import { AggregateFunction } from '../functions/aggregate/aggregate-function';
 import { ToTsQueryFunction } from '../functions/text-search/to-tsquery';
@@ -21,7 +23,13 @@ import { WhereQueryBuilder } from './where';
 export class FromQueryBuilder extends QueryBuilder {
 	private joins: Join[] = [];
 
-	constructor(private parentQueryBuilder: SelectQueryBuilder, private fromClause: TableDefinition) {
+	constructor(parentQueryBuilder: SelectQueryBuilder, fromClause: TableDefinition);
+	constructor(parentQueryBuilder: SelectQueryBuilder, fromClause: FunctionDefinition, parameters?: any[]);
+	constructor(
+		private parentQueryBuilder: SelectQueryBuilder,
+		private fromClause: SourceDefinition,
+		private parameters?: any[]
+	) {
 		super();
 	}
 
@@ -76,8 +84,7 @@ export class FromQueryBuilder extends QueryBuilder {
 							| ColumnDefinition
 							| AggregateFunction
 							| Cast
-							| TsRankCdFunction =
-							select[0];
+							| TsRankCdFunction = select[0];
 						const alias: AliasReference | undefined = select[1];
 						let stmt: string = '';
 						if (isResolvable(value)) {
@@ -101,7 +108,15 @@ export class FromQueryBuilder extends QueryBuilder {
 			.join(prettySelection)}`;
 		sql += prettyBreak;
 		sql += 'FROM ';
-		sql += `${this.fromClause.tableName}`;
+		sql += `${this.fromClause.__name}`;
+		if (this.fromClause instanceof FunctionDefinition) {
+			sql += `(${(this.parameters || [])
+				.map((p: any) => {
+					values.push(p);
+					return `$${valueIndex++}`;
+				})
+				.join(', ')})`;
+		}
 		if (this.fromClause.alias !== undefined) {
 			sql += ` AS ${this.fromClause.alias.aliasName}`;
 		}
@@ -167,8 +182,7 @@ export class FromQueryBuilder extends QueryBuilder {
 							| ColumnDefinition
 							| AggregateFunction
 							| Cast
-							| TsRankCdFunction =
-							select[0];
+							| TsRankCdFunction = select[0];
 						const alias: AliasReference | undefined = select[1];
 						let stmt: string = '';
 						if (isResolvable(value)) {
@@ -190,7 +204,21 @@ export class FromQueryBuilder extends QueryBuilder {
 			.join(prettySelection)}`;
 		sql += prettyBreak;
 		sql += 'FROM ';
-		sql += `${this.fromClause.tableName}`;
+		sql += `${this.fromClause.__name}`;
+		if (this.fromClause instanceof FunctionDefinition) {
+			sql += `(${(this.parameters || [])
+				.map((value: any) => {
+					if (isResolvable(value)) {
+						return value.resolve();
+					} else if (typeof value === 'number' || typeof value === 'boolean') {
+						return `${value}`;
+					} else if (typeof value === 'string') {
+						return `'${value}'`;
+					}
+					return `${value}`;
+				})
+				.join(', ')})`;
+		}
 		if (this.fromClause.alias !== undefined) {
 			sql += ` AS ${this.fromClause.alias.aliasName}`;
 		}

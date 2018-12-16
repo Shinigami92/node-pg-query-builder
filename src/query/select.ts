@@ -1,6 +1,8 @@
 import { Cast } from '../data-types';
 import { AliasReference } from '../definitions/alias-reference';
 import { ColumnDefinition } from '../definitions/column-definition';
+import { FunctionDefinition } from '../definitions/function-definition';
+import { SourceDefinition } from '../definitions/source-definition';
 import { TableDefinition } from '../definitions/table-definition';
 import { AggregateFunction } from '../functions/aggregate/aggregate-function';
 import { TsRankCdFunction } from '../functions/text-search/ts-rank-cd';
@@ -26,8 +28,11 @@ export class SelectQueryBuilder {
 	) {
 		this.selects.push(...selections);
 	}
-	public from(tableName: TableDefinition): FromQueryBuilder {
-		return new FromQueryBuilder(this, tableName);
+
+	public from(tableName: TableDefinition): FromQueryBuilder;
+	public from(functionName: FunctionDefinition, parameters?: any[]): FromQueryBuilder;
+	public from(source: SourceDefinition, parameters?: any[]): FromQueryBuilder {
+		return new FromQueryBuilder(this, source, parameters);
 	}
 }
 

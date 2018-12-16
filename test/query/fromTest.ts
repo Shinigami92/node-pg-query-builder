@@ -4,13 +4,30 @@ import * as chaiString from 'chai-string';
 
 chai.use(chaiString);
 
-import { AliasReference, ColumnDefinition, QueryBuilder, QueryConfig, select, TableDefinition, TEXT } from '../../src';
+import {
+	AliasReference,
+	ColumnDefinition,
+	FunctionDefinition,
+	GLOBAL_STAR,
+	QueryBuilder,
+	QueryConfig,
+	select,
+	TableDefinition,
+	TEXT,
+	UUID
+} from '../../src';
 
 class PersonTable extends TableDefinition {
 	public readonly firstname: ColumnDefinition = new ColumnDefinition('firstname', TEXT);
 }
 
+class TradeFunction extends FunctionDefinition {
+	public readonly buy_location_id: ColumnDefinition = new ColumnDefinition('buy_location_id', UUID);
+	public readonly sell_location_id: ColumnDefinition = new ColumnDefinition('sell_location_id', UUID);
+}
+
 const Person: PersonTable = new PersonTable('person');
+const FTrade: TradeFunction = new TradeFunction('f_trade', [UUID]);
 
 describe('FromQueryBuilder', function(): void {
 	describe('toSQL', function(): void {
@@ -46,6 +63,16 @@ describe('FromQueryBuilder', function(): void {
 
 			expect(sql)
 				.to.equal('SELECT firstname FROM person LIMIT 2 OFFSET 3')
+				.and.to.be.singleLine();
+		});
+
+		it('should accept function', function(): void {
+			const query: QueryBuilder = select(GLOBAL_STAR).from(FTrade, ['76456e77-96bd-4e1f-9027-dc6c2c5db0bf']);
+
+			const sql: string = query.toSQL();
+
+			expect(sql)
+				.to.equal("SELECT * FROM f_trade('76456e77-96bd-4e1f-9027-dc6c2c5db0bf')")
 				.and.to.be.singleLine();
 		});
 	});
@@ -99,6 +126,18 @@ describe('FromQueryBuilder', function(): void {
 			expect(queryConfig).to.deep.equal({
 				text: 'SELECT firstname, $1 AS a_string, $2 AS a_number, $3 AS a_bool FROM person',
 				values: ['Hello World!', 42, true]
+			});
+			expect(queryConfig.text).to.be.singleLine();
+		});
+
+		it('should accept function and outsource the values', function(): void {
+			const query: QueryBuilder = select(GLOBAL_STAR).from(FTrade, ['76456e77-96bd-4e1f-9027-dc6c2c5db0bf']);
+
+			const queryConfig: QueryConfig = query.toQuery();
+
+			expect(queryConfig).to.deep.equal({
+				text: 'SELECT * FROM f_trade($1)',
+				values: ['76456e77-96bd-4e1f-9027-dc6c2c5db0bf']
 			});
 			expect(queryConfig.text).to.be.singleLine();
 		});
