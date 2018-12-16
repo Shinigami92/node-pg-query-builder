@@ -7,7 +7,7 @@
 		"module": "commonjs",
 		"plugins": [
 			{
-				"name": "tslint-language-service"
+				"name": "typescript-tslint-plugin"
 			}
 		],
 		"lib": ["es2017"],
